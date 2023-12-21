@@ -1,7 +1,7 @@
 Vagrant.configure(2) do |config|
 	config.vm.box = "mathiasgutehall/devbox"
   	config.vm.box_version = "0.2"
-	config.vm.synced_folder "~/Development/", "/home/vagrant/code", :owner => "vagrant"
+	config.vm.synced_folder "~/Development/Nordcloud/Clients/", "/home/vagrant/code", :owner => "vagrant"
 	config.vm.box_check_update = false
   	config.vm.provision "shell", inline: "dpkg-reconfigure --frontend noninteractive tzdata"
 	config.vm.provision "shell", path: "../master.sh"
