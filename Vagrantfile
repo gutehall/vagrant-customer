@@ -34,5 +34,13 @@ Vagrant.configure(2) do |config|
 	# 	v.name = "devbox"
 	# 	v.check_guest_additions = true
 	# end
+
+	# config.vm.provider "qemu" do |qe|
+	# 	qe.machine = "virt,accel=hvf,highmem=off"
+	# 	qe.cpu = "cortex-a72"
+	# 	qe.memory = 2048
+	#   	qe.cpus = 2
+	#  	qe.name = "devbox"
+	# end
 	
 end
