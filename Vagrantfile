@@ -39,15 +39,16 @@ Vagrant.configure(2) do |config|
 	config.vm.synced_folder "~/Development/Nordcloud/Clients/", "/home/vagrant/code", :owner => "vagrant"
 	config.vm.box_check_update = false
   	config.vm.provision "shell", inline: "dpkg-reconfigure --frontend noninteractive tzdata"
+	config.vm.provision "shell", inline: "mkdir /home/vagrant/.vim/colors/"
 	config.vm.provision "shell", inline: $script
 	config.vm.provision "shell", inline: "sudo chsh -s /bin/zsh vagrant"
 	config.vm.provision "shell", path: "install.sh"
 	config.vm.provision "file", source: "../files/.zshrc", destination: "/home/vagrant/.zshrc"
 	config.vm.provision "file", source: "../files/bullet-train.zsh-theme", destination: "/home/vagrant/.oh-my-zsh/themes/bullet-train.zsh-theme"
 	config.vm.provision "file", source: "../files/.vimrc", destination: "/home/vagrant/.vimrc"
-	config.vm.provision "file", source: "../files/.vim/colors/", destination: "/home/vagrant/.vim/colors"
+	config.vm.provision "file", source: "../files/zenburn.vim", destination: "/home/vagrant/.vim/colors/zenburn.vim"
 
-	# Remove comments if you need to override default settings for the box.
+	# Remove comments for the needed provider.
 	
 	# config.vm.provider "virtualbox" do |vb|
 	# 	vb.memory = 2048
@@ -77,5 +78,4 @@ Vagrant.configure(2) do |config|
 	#   	qe.cpus = 2
 	#  	qe.name = "devbox"
 	# end
-	
 end
