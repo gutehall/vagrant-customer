@@ -1,5 +1,8 @@
 $script = <<-'SCRIPT'
 
+	# install needed software
+	sudo apt update && sudo apt upgrade -y && sudo apt -y install --no-install-recommends unzip python3-pip npm zsh git curl wget vim locales sudo gnupg software-properties-common ca-certificates curl apt-transport-https lsb-release gnupg python3-pip python3-setuptools nodejs powerline
+
 	# exa - temporary fix. change to normal when exa is updated to support 23.04
 	ARCHITECTURE=$(dpkg --print-architecture)
 	wget -c http://old-releases.ubuntu.com/ubuntu/pool/universe/r/rust-exa/exa_0.10.1-2_$ARCHITECTURE.deb
@@ -13,9 +16,6 @@ $script = <<-'SCRIPT'
 	sudo install lazygit /usr/local/bin
 	rm -rf lazygit*
 
-	# clean up
-	apt-get clean && apt-get autoremove -y && rm -rf /var/lib/apt/lists/*
-
 	# ultimate vimrc
 	sudo -u vagrant git clone --depth=1 https://github.com/amix/vimrc.git /home/vagrant/.vim_runtime
 	sudo -u vagrant sh /home/vagrant/.vim_runtime/install_awesome_vimrc.sh
@@ -27,6 +27,9 @@ $script = <<-'SCRIPT'
 	sudo -u vagrant git clone https://github.com/zsh-users/zsh-autosuggestions /home/vagrant/.oh-my-zsh/custom/plugins/zsh-autosuggestions
 	sudo -u vagrant git clone https://github.com/zsh-users/zsh-syntax-highlighting.git /home/vagrant/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 	sudo -u vagrant git clone https://github.com/MohamedElashri/exa-zsh /home/vagrant/.oh-my-zsh/custom/plugins/exa-zsh
+
+	# clean up
+	apt-get clean && apt-get autoremove -y && rm -rf /var/lib/apt/lists/*
 
 SCRIPT
 
