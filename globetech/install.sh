@@ -1,14 +1,12 @@
 #!/bin/bash
 
-USER="vagrant"
 UPDATE="sudo apt-get update"
 INSTALL="sudo apt-get -y install"
 
-
 # create new ssh key
-[[ ! -f /home/${USER}/.ssh/mykey ]] &&
-    mkdir -p /home/${USER}/.ssh &&
-    ssh-keygen -f /home/${USER}/.ssh/mykey -N ''
+[[ ! -f /home/vagrant/.ssh/mykey ]] &&
+    mkdir -p /home/vagrant/.ssh &&
+    ssh-keygen -f /home/vagrant/.ssh/mykey -N ''
 
 # awscli
 ARCHITECTURE=$(arch)
@@ -22,25 +20,6 @@ curl https://awscli.amazonaws.com/"$PACKAGE_NAME".zip -o "awscliv2.zip"
 unzip -q awscliv2.zip
 sudo ./aws/install
 rm -rf aws*
-
-# azure cli
-echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ jammy main" |
-sudo tee /etc/apt/sources.list.d/azure-cli.list
-
-curl -sL https://packages.microsoft.com/keys/microsoft.asc |
-    gpg --dearmor |
-    sudo tee /etc/apt/trusted.gpg.d/microsoft.gpg > /dev/null
-
-$UPDATE && $INSTALL azure-cli
-
-# gcloud sdk
-curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg
-echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | 
-    sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
-$UPDATE && $INSTALL google-cloud-cli
-
-# install kubectl & minikube
-$INSTALL kubectl google-cloud-cli-minikube
 
 # terraform & packer
 wget -O- https://apt.releases.hashicorp.com/gpg |
@@ -67,4 +46,4 @@ echo \
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 $UPDATE && $INSTALL docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
-sudo usermod -aG docker ${USER}
+sudo usermod -aG docker vagrant

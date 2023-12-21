@@ -1,14 +1,12 @@
 #!/bin/bash
 
-USER="vagrant"
 UPDATE="sudo apt-get update"
 INSTALL="sudo apt-get -y install"
 
-
 # create new ssh key
-[[ ! -f /home/${USER}/.ssh/mykey ]] &&
-    mkdir -p /home/${USER}/.ssh &&
-    ssh-keygen -f /home/${USER}/.ssh/mykey -N ''
+[[ ! -f /home/vagrant/.ssh/mykey ]] &&
+    mkdir -p /home/vagrant/.ssh &&
+    ssh-keygen -f /home/vagrant/.ssh/mykey -N ''
 
 # awscli
 ARCHITECTURE=$(arch)
@@ -67,4 +65,4 @@ echo \
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 $UPDATE && $INSTALL docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
-sudo usermod -aG docker ${USER}
+sudo usermod -aG docker vagrant

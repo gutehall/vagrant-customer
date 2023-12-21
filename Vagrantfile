@@ -20,7 +20,7 @@ $script = <<-'SCRIPT'
 	sudo -u vagrant git clone --depth=1 https://github.com/amix/vimrc.git /home/vagrant/.vim_runtime
 	sudo -u vagrant sh /home/vagrant/.vim_runtime/install_awesome_vimrc.sh
 
-	# oh my zsh
+	# oh-my-zsh
 	sudo -u vagrant sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 
 	# zsh plugin
@@ -39,12 +39,11 @@ Vagrant.configure(2) do |config|
 	config.vm.synced_folder "~/Development/Nordcloud/Clients/", "/home/vagrant/code", :owner => "vagrant"
 	config.vm.box_check_update = false
   	config.vm.provision "shell", inline: "dpkg-reconfigure --frontend noninteractive tzdata"
-	#config.vm.provision "shell", path: "../master.sh"
 	config.vm.provision "shell", inline: $script
+	config.vm.provision "shell", inline: "sudo chsh -s /bin/zsh vagrant"
 	config.vm.provision "shell", path: "install.sh"
 	config.vm.provision "file", source: "../files/.zshrc", destination: "/home/vagrant/.zshrc"
 	config.vm.provision "file", source: "../files/bullet-train.zsh-theme", destination: "/home/vagrant/.oh-my-zsh/themes/bullet-train.zsh-theme"
-	config.vm.provision :shell, inline: "sudo chsh -s /bin/zsh vagrant"
 	config.vm.provision "file", source: "../files/.vimrc", destination: "/home/vagrant/.vimrc"
 	config.vm.provision "file", source: "../files/.vim/colors/", destination: "/home/vagrant/.vim/colors"
 
