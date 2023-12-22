@@ -1,8 +1,5 @@
 $script = <<-'SCRIPT'
 
-	# install needed software
-	sudo apt update && sudo apt upgrade -y && sudo apt -y install --no-install-recommends unzip python3-pip npm zsh git curl wget vim locales sudo gnupg software-properties-common ca-certificates curl apt-transport-https lsb-release gnupg python3-pip python3-setuptools nodejs powerline
-
 	# exa - temporary fix. change to normal when exa is updated to support 23.04
 	ARCHITECTURE=$(dpkg --print-architecture)
 	wget -c http://old-releases.ubuntu.com/ubuntu/pool/universe/r/rust-exa/exa_0.10.1-2_$ARCHITECTURE.deb
