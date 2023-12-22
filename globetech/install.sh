@@ -1,12 +1,13 @@
 #!/bin/bash
 
+CLIENT="GlobeTech"
 UPDATE="sudo apt-get update"
 INSTALL="sudo apt-get -y install"
 
 # create new ssh key
-[[ ! -f /home/vagrant/.ssh/mykey ]] &&
+[[ ! -f /home/vagrant/.ssh/$CLIENT ]] &&
     mkdir -p /home/vagrant/.ssh &&
-    ssh-keygen -f /home/vagrant/.ssh/mykey -N ''
+    ssh-keygen -f /home/vagrant/.ssh/$CLIENT -N ''
 
 # awscli
 ARCHITECTURE=$(arch)
