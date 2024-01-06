@@ -32,11 +32,11 @@ SCRIPT
 Vagrant.configure(2) do |config|
 	config.vm.box = "mathiasgutehall/devbox"
   	config.vm.box_version = "0.2"
-	config.vm.synced_folder "~/Development/Nordcloud/Clients/", "/home/vagrant/code", :owner => "vagrant"
+	config.vm.synced_folder "~/Development/Nordcloud/Clients/", "/home/vagrant/code", :owner => "vagrant" # Add client folder
 	config.vm.box_check_update = false
   	config.vm.provision "shell", inline: "dpkg-reconfigure --frontend noninteractive tzdata"
 	config.vm.provision "shell", inline: $script
-	config.vm.provision "shell", inline: "mkdir /home/vagrant/.vim/colors/"
+	#config.vm.provision "shell", inline: "mkdir /home/vagrant/.vim/colors/"
 	config.vm.provision "shell", inline: "sudo chsh -s /bin/zsh vagrant"
 	config.vm.provision "shell", path: "install.sh"
 	config.vm.provision "file", source: "../files/.zshrc", destination: "/home/vagrant/.zshrc"
@@ -44,34 +44,10 @@ Vagrant.configure(2) do |config|
 	config.vm.provision "file", source: "../files/.vimrc", destination: "/home/vagrant/.vimrc"
 	config.vm.provision "file", source: "../files/zenburn.vim", destination: "/home/vagrant/.vim/colors/zenburn.vim"
 
-	# Remove comments for the needed provider.
-	
-	# config.vm.provider "virtualbox" do |vb|
-	# 	vb.memory = 2048
-	#  	vb.cpus = 2
-	# 	vb.name = "devbox"
-	# 	vb.check_guest_additions = true
-	# end
-			
-	# config.vm.provider "parallels" do |prl|
-	# 	prl.memory = 2048
-	# 	prl.cpus = 2
-	# 	prl.name = "devbox"
-	# 	prl.update_guest_tools = true
-	# end
-
-	# config.vm.provider "vmware_desktop" do |v|
-	# 	v.memory = 2048
-	#  	v.cpus = 2
-	# 	v.name = "devbox"
-	# 	v.check_guest_additions = true
-	# end
-
-	# config.vm.provider "qemu" do |qe|
-	# 	qe.machine = "virt,accel=hvf,highmem=off"
-	# 	qe.cpu = "cortex-a72"
-	# 	qe.memory = 2048
-	#   	qe.cpus = 2
-	#  	qe.name = "devbox"
-	# end
+	config.vm.provider "parallels" do |prl|
+		prl.memory = 2048
+	 	prl.cpus = 2
+		prl.name = "devbox"
+		prl.update_guest_tools = true
+	end
 end
