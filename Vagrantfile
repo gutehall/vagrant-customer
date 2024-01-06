@@ -1,10 +1,9 @@
 $script = <<-'SCRIPT'
 
 	# exa - temporary fix. change to normal when exa is updated to support 23.04
-	ARCHITECTURE=$(dpkg --print-architecture)
-	wget -c http://old-releases.ubuntu.com/ubuntu/pool/universe/r/rust-exa/exa_0.10.1-2_$ARCHITECTURE.deb
-	sudo apt-get -y install ./exa_0.10.1-2_$ARCHITECTURE.deb
-	rm -rf exa_0.10.1-2_$ARCHITECTURE.deb
+	wget -c http://old-releases.ubuntu.com/ubuntu/pool/universe/r/rust-exa/exa_0.10.1-2_arm64.deb
+	sudo apt-get -y install ./exa_0.10.1-2_arm64.deb
+	rm -rf exa_0.10.1-2_arm64.deb
 
 	# lazygit
 	LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
