@@ -10,14 +10,7 @@ INSTALL="sudo apt-get -y install"
     ssh-keygen -f /home/vagrant/.ssh/$CLIENT -N ''
 
 # awscli
-ARCHITECTURE=$(arch)
-PACKAGE_NAME="awscli-exe-linux-"
-if [ "$ARCHITECTURE" = "arm*" ]; then
-  PACKAGE_NAME+="aarch64"
-else
-  PACKAGE_NAME+="$(arch)"
-fi
-curl https://awscli.amazonaws.com/"$PACKAGE_NAME".zip -o "awscliv2.zip"
+curl "https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip" -o "awscliv2.zip"
 unzip -q awscliv2.zip
 sudo ./aws/install
 rm -rf aws*
