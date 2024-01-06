@@ -30,7 +30,7 @@ $script = <<-'SCRIPT'
 SCRIPT
 
 Vagrant.configure(2) do |config|
-	config.vm.box = "mathiasgutehall/devbox"
+	config.vm.box = "mathiasgutehall/ubuntubase"
   	config.vm.box_version = "0.2"
 	config.vm.synced_folder "~/Development/Nordcloud/Clients/", "/home/vagrant/code", :owner => "vagrant" # Add client folder
 	config.vm.box_check_update = false
