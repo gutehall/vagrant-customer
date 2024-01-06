@@ -1,6 +1,7 @@
 #!/bin/bash
 
 CLIENT=""
+UBUNTU_CODENAME="jammy"
 UPDATE="sudo apt-get update"
 INSTALL="sudo apt-get -y install"
 
@@ -31,7 +32,7 @@ $INSTALL kubectl google-cloud-cli-minikube
 wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" |
     sudo tee /etc/apt/sources.list.d/hashicorp.list
-    
+
 # terraform
 $UPDATE && $INSTALL terraform
 
@@ -39,7 +40,8 @@ $UPDATE && $INSTALL terraform
 $UPDATE && $INSTALL packer
 
 # ansible
-add-apt-repository --yes --update ppa:ansible/ansible
+wget -O- "https://keyserver.ubuntu.com/pks/lookup?fingerprint=on&op=get&search=0x6125E2A8C77F2818FB7BD15B93C4A3FD7BB9C367" | sudo gpg --dearmour -o /usr/share/keyrings/ansible-archive-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/ansible-archive-keyring.gpg] http://ppa.launchpad.net/ansible/ansible/ubuntu $UBUNTU_CODENAME main" | sudo tee /etc/apt/sources.list.d/ansible.list
 $UPDATE && $INSTALL ansible
 
 # vault
