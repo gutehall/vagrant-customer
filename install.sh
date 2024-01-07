@@ -1,13 +1,11 @@
 #!/bin/bash
 
-CLIENT=""
 UPDATE="sudo apt-get update"
 INSTALL="sudo apt-get -y install"
 
-# create new ssh key
-[[ ! -f /home/vagrant/.ssh/$CLIENT ]] &&
-    mkdir -p /home/vagrant/.ssh &&
-    ssh-keygen -f /home/vagrant/.ssh/$CLIENT -N ''
+# create ssh keys
+ssh-keygen -t rsa -b 2048 -f "/home/vagrant/.ssh/id_rsa" -N "" &&
+    cp /home/vagrant/.ssh/id_rsa.pub /home/vagrant/.ssh/authorized_keys
 
 # github cli
 curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg &&
