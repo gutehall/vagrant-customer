@@ -35,6 +35,7 @@ Vagrant.configure(2) do |config|
 	config.vm.synced_folder "~/Development/Nordcloud/Clients/", "/home/vagrant/code", :owner => "vagrant" # Add client folder
 	config.vm.box_check_update = false
   	config.vm.provision "shell", inline: "dpkg-reconfigure --frontend noninteractive tzdata"
+	config.vm.provision "shell", inline: "timedatectl set-timezone Europe/Stockholm"
 	config.vm.provision "shell", inline: $script
 	#config.vm.provision "shell", inline: "mkdir /home/vagrant/.vim/colors/"
 	config.vm.provision "shell", inline: "sudo chsh -s /bin/zsh vagrant"
@@ -47,7 +48,7 @@ Vagrant.configure(2) do |config|
 	config.vm.provider "parallels" do |prl|
 		prl.memory = 2048
 	 	prl.cpus = 2
-		prl.name = "devbox"
+		prl.name = "" # Add client name
 		prl.update_guest_tools = true
 	end
 end
