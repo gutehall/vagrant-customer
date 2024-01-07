@@ -28,24 +28,18 @@ $UPDATE && $INSTALL google-cloud-cli
 # kubectl & minikube
 $INSTALL kubectl google-cloud-cli-minikube
 
-# terraform & packer
+# adding hashicorps keys and source
 wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" |
     sudo tee /etc/apt/sources.list.d/hashicorp.list
 
-# terraform
-$UPDATE && $INSTALL terraform
-
-# packer
-$UPDATE && $INSTALL packer
+# terraform, packer and vault
+$UPDATE && $INSTALL terraform packer vault
 
 # ansible
 wget -O- "https://keyserver.ubuntu.com/pks/lookup?fingerprint=on&op=get&search=0x6125E2A8C77F2818FB7BD15B93C4A3FD7BB9C367" | sudo gpg --dearmour -o /usr/share/keyrings/ansible-archive-keyring.gpg
 echo "deb [signed-by=/usr/share/keyrings/ansible-archive-keyring.gpg] http://ppa.launchpad.net/ansible/ansible/ubuntu $UBUNTU_CODENAME main" | sudo tee /etc/apt/sources.list.d/ansible.list
 $UPDATE && $INSTALL ansible
-
-# vault
-$UPDATE && $INSTALL vault
 
 # docker
 sudo install -m 0755 -d /etc/apt/keyrings
@@ -59,3 +53,9 @@ echo \
 $UPDATE && $INSTALL docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
 sudo usermod -aG docker vagrant
+
+# tfsec
+curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
+
+# infracost
+curl -fsSL https://raw.githubusercontent.com/infracost/infracost/master/scripts/install.sh | sh
