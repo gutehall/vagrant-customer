@@ -73,3 +73,6 @@ curl -fsSL https://raw.githubusercontent.com/infracost/infracost/master/scripts/
 curl -Lo localstack-cli-3.0.2-linux-arm64-onefile.tar.gz \
     https://github.com/localstack/localstack-cli/releases/download/v3.0.2/localstack-cli-3.0.2-linux-arm64-onefile.tar.gz
 sudo tar xvzf localstack-cli-3.0.2-linux-*-onefile.tar.gz -C /usr/local/bin
+
+# clean up
+sudo apt-get clean && sudo apt-get autoremove -y && sudo rm -rf /var/lib/apt/lists/*

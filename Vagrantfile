@@ -24,9 +24,6 @@ $script = <<-'SCRIPT'
 	sudo -u vagrant git clone https://github.com/zsh-users/zsh-syntax-highlighting.git /home/vagrant/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 	sudo -u vagrant git clone https://github.com/MohamedElashri/exa-zsh /home/vagrant/.oh-my-zsh/custom/plugins/exa-zsh
 
-	# clean up
-	apt-get clean && apt-get autoremove -y && rm -rf /var/lib/apt/lists/*
-
 SCRIPT
 
 Vagrant.configure(2) do |config|
