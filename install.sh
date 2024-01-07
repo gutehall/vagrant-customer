@@ -67,6 +67,12 @@ install terrascan /usr/local/bin && rm terrascan
 # terrahub
 npm install --global terrahub
 
+# terraform docs
+curl -Lo ./terraform-docs.tar.gz https://github.com/terraform-docs/terraform-docs/releases/download/v0.17.0/terraform-docs-v0.17.0-linux-arm64.tar.gz
+tar -xzf terraform-docs.tar.gz && rm terraform-docs.tar.gz
+chmod +x terraform-docs
+mv terraform-docs /usr/local/bin/terraform-docs
+
 # tfsec
 curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
 
