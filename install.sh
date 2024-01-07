@@ -1,7 +1,6 @@
 #!/bin/bash
 
 CLIENT=""
-UBUNTU_CODENAME="jammy"
 UPDATE="sudo apt-get update"
 INSTALL="sudo apt-get -y install"
 
