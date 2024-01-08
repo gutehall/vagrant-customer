@@ -3,11 +3,6 @@ $script = <<-'SCRIPT'
 	# install needed tools
 	sudo apt-get update && sudo apt-get install -y --no-install-recommends tzdata unzip npm zsh git curl wget vim locales sudo gnupg software-properties-common ca-certificates curl apt-transport-https lsb-release gnupg python3-pip python3-setuptools nodejs fonts-powerline libssl-dev libffi-dev python-dev-is-python3 build-essential exa
 
-	# exa - temporary fix. change to normal when exa is updated to support 23.04
-	# wget -c http://old-releases.ubuntu.com/ubuntu/pool/universe/r/rust-exa/exa_0.10.1-2_arm64.deb
-	# sudo apt-get -y install ./exa_0.10.1-2_arm64.deb
-	# rm -rf exa_0.10.1-2_arm64.deb
-
 	# lazygit
 	LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
 	curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
@@ -36,7 +31,6 @@ Vagrant.configure(2) do |config|
 	config.vm.box = "bento/ubuntu-23.04-arm64"
 	config.vm.synced_folder "~/Development/Nordcloud/Clients/", "/home/vagrant/code", :owner => "vagrant" # Add client folder
 	config.vm.box_check_update = false
-  	#config.vm.provision "shell", inline: "dpkg-reconfigure --frontend noninteractive tzdata"
 	config.vm.provision "shell", inline: $script
 	config.vm.provision "shell", inline: "sudo chsh -s /bin/zsh vagrant"
 	config.vm.provision "shell", path: "install.sh"
