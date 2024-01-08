@@ -20,16 +20,14 @@ sudo ./aws/install
 rm -rf aws*
 
 # azure cli
-curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+# curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
-# gcloud sdk
-curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg &&
-    echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" |
-    sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list &&
-    $UPDATE && $INSTALL google-cloud-cli
+# minikube
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-arm64 &&
+    sudo install minikube-linux-arm64 /usr/local/bin/minikube
 
-# kubectl & minikube
-$INSTALL kubectl google-cloud-cli-minikube
+# kubectl
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/arm64/kubectl"
 
 # adding hashicorps keys and source
 wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg &&
@@ -78,12 +76,6 @@ curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/inst
 
 # infracost
 curl -fsSL https://raw.githubusercontent.com/infracost/infracost/master/scripts/install.sh | sh
-
-# localstack
-curl -Lo localstack-cli-3.0.2-linux-arm64-onefile.tar.gz \
-    https://github.com/localstack/localstack-cli/releases/download/v3.0.2/localstack-cli-3.0.2-linux-arm64-onefile.tar.gz
-sudo tar xvzf localstack-cli-3.0.2-linux-*-onefile.tar.gz -C /usr/local/bin
-rm -rf localstack-cli-3.0.2-linux-arm64-onefile.tar.gz
 
 # clean up
 sudo apt-get clean && sudo apt-get autoremove --purge -y && sudo rm -rf /var/lib/apt/lists/*
