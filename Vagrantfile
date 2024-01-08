@@ -1,7 +1,9 @@
 $script = <<-'SCRIPT'
 
 	# install needed tools
-	sudo apt-get update && sudo apt-get install -y --no-install-recommends tzdata unzip npm zsh git curl wget vim locales sudo gnupg software-properties-common ca-certificates curl apt-transport-https lsb-release gnupg python3-pip python3-setuptools nodejs fonts-powerline libssl-dev libffi-dev python-dev-is-python3 build-essential exa
+	sudo apt-get update && sudo apt-get install -y --no-install-recommends tzdata unzip npm zsh git curl wget vim locales sudo gnupg software-properties-common \ 
+		ca-certificates curl apt-transport-https lsb-release gnupg python3-pip python3-setuptools nodejs fonts-powerline \ 
+		libssl-dev libffi-dev python-dev-is-python3 build-essential exa
 
 	# lazygit
 	LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
