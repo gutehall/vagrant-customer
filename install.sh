@@ -44,7 +44,7 @@ $UPDATE && $INSTALL ansible
 # aws cdk
 npm install -g aws-cdk
 
-# docker
+# docker - Only use if customer has got license
 sudo install -m 0755 -d /etc/apt/keyrings &&
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg &&
     sudo chmod a+r /etc/apt/keyrings/docker.gpg
@@ -56,6 +56,10 @@ echo \
     $UPDATE && $INSTALL docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
 sudo usermod -aG docker vagrant
+
+# podman & podman-compose
+$UPDATE && $INSTALL podman
+pip3 install podman-compose
 
 # terrascan
 curl -L "$(curl -s https://api.github.com/repos/tenable/terrascan/releases/latest | grep -o -E "https://.+?_Linux_x86_64.tar.gz")" >terrascan.tar.gz
@@ -78,4 +82,4 @@ curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/inst
 curl -fsSL https://raw.githubusercontent.com/infracost/infracost/master/scripts/install.sh | sh
 
 # clean up
-sudo apt-get clean && sudo apt-get autoremove --purge -y && sudo rm -rf /var/lib/apt/lists/*
+sudo apt-get clean && sudo apt-get autoremove --purge -y && sudo rm -rf /var/lib/apt/lists/*g
