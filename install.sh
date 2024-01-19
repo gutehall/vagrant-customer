@@ -14,14 +14,7 @@ curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo 
     $UPDATE && $INSTALL gh
 
 # aws cli
-ARCHITECTURE=$(arch)
-PACKAGE_NAME="awscli-exe-linux-"
-if [ "$ARCHITECTURE" = "arm*" ]; then
-    PACKAGE_NAME+="aarch64"
-else
-    PACKAGE_NAME+="$(arch)"
-fi
-curl https://awscli.amazonaws.com/"$PACKAGE_NAME".zip -o "awscliv2.zip"
+curl "https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip" -o "awscliv2.zip"
 unzip -q awscliv2.zip
 sudo ./aws/install
 rm -rf aws*
@@ -31,10 +24,11 @@ curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
 # minikube
 curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-arm64 &&
-    sudo install minikube-linux-arm64 /usr/local/bin/minikube
+sudo install minikube-linux-arm64 /usr/local/bin/minikube
 
 # kubectl
-curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/arm64/kubectl"
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/arm64/kubectl" && 
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 
 # adding hashicorps keys and source
 wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg &&
