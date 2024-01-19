@@ -41,6 +41,7 @@ Vagrant.configure(2) do |config|
 	config.vm.provision "file", source: "../files/bullet-train.zsh-theme", destination: "/home/vagrant/.oh-my-zsh/themes/bullet-train.zsh-theme"
 	config.vm.provision "file", source: "../files/.vimrc", destination: "/home/vagrant/.vimrc"
 	config.vm.provision "file", source: "../files/zenburn.vim", destination: "/home/vagrant/.vim/colors/zenburn.vim"
+	config.vm.provision "shell", path: "cleanup.sh"
 
 	# Change to what you need below.
 	
