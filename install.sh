@@ -62,6 +62,10 @@ npm install -g aws-cdk
 $UPDATE && $INSTALL podman
 pip3 install podman-compose
 
+# tfenv
+# git clone --depth=1 https://github.com/tfutils/tfenv.git ~/.tfenv
+# echo 'export PATH="$HOME/.tfenv/bin:$PATH"' >>~/.zprofile
+
 # terrascan
 curl -L "$(curl -s https://api.github.com/repos/tenable/terrascan/releases/latest | grep -o -E "https://.+?_Linux_x86_64.tar.gz")" >terrascan.tar.gz
 tar -xf terrascan.tar.gz terrascan && rm terrascan.tar.gz
