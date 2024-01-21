@@ -1,8 +1,5 @@
 $script = <<-'SCRIPT'
 
-	# install needed tools
-	sudo apt-get update && sudo apt-get install -y --no-install-recommends tzdata unzip zsh git curl wget vim locales sudo gnupg software-properties-common ca-certificates curl apt-transport-https lsb-release gnupg python3-pip python3-setuptools nodejs fonts-powerline libssl-dev libffi-dev python-dev-is-python3 build-essential exa npm
-
 	# lazygit
 	LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
 	curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
@@ -31,7 +28,7 @@ Vagrant.configure(2) do |config|
 	# config.vm.box = "mathiasgutehall/ubuntu23-04"
 	# config.vm.box_version = "0.1"
 	config.vm.box = "mathiasgutehall/debian-12"
-	config.vm.box_version = "2024.01.20"
+	config.vm.box_version = "2024.01.21"
 	config.vm.synced_folder "~/Development/Nordcloud/Clients/", "/home/vagrant/", :owner => "vagrant" # Add client folder
 	config.vm.box_check_update = false
 	config.vm.provision "shell", inline: $script
