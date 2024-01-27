@@ -13,6 +13,7 @@ $script = <<-'SCRIPT'
 	sudo -u vagrant git clone https://github.com/MohamedElashri/exa-zsh /home/vagrant/.oh-my-zsh/custom/plugins/exa-zsh
 
 	# themes
+	sudo -u vagrant mkdir -p /home/vagrant/.vim/colors
 	sudo -u vagrant curl -sSL https://github.com/jnurmine/Zenburn/blob/master/colors/zenburn.vim >/home/vagrant/.vim/colors/zenburn.vim
 	sudo -u vagrant curl -sSL https://github.com/caiogondim/bullet-train.zsh/blob/master/bullet-train.zsh-theme >/home/vagrant/.oh-my-zsh/themes/bullet-train.zsh-theme
 
@@ -32,9 +33,7 @@ Vagrant.configure(2) do |config|
 	config.vm.provision "shell", inline: "sudo chsh -s /bin/zsh vagrant"
 	config.vm.provision "shell", path: "../scripts/install.sh"
 	config.vm.provision "file", source: "../files/.zshrc", destination: "/home/vagrant/.zshrc"
-	config.vm.provision "file", source: "../files/bullet-train.zsh-theme", destination: "/home/vagrant/.oh-my-zsh/themes/bullet-train.zsh-theme"
 	config.vm.provision "file", source: "../files/.vimrc", destination: "/home/vagrant/.vimrc"
-	config.vm.provision "file", source: "../files/zenburn.vim", destination: "/home/vagrant/.vim/colors/zenburn.vim"
 	config.vm.provision "shell", path: "../scripts/cleanup.sh"
 
 	config.vm.provider "parallels" do |prl|
