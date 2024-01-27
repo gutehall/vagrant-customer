@@ -23,7 +23,7 @@ Vagrant.configure(2) do |config|
     	config.timezone.value = "Europe/Stockholm"
   	end
 	# config.vm.box = "gutehall/ubuntu23-04"
-	# config.vm.box_version = "0.1"
+	# config.vm.box_version = "2024.01.17"
 	config.vm.box = "gutehall/debian-12"
 	config.vm.box_version = "2024.01.21"
 	config.vm.synced_folder "~/Development/Nordcloud/Clients/", "/home/vagrant/", :owner => "vagrant" # Add client folder
@@ -42,6 +42,5 @@ Vagrant.configure(2) do |config|
 		prl.cpus = 2
 		prl.name = "devbox"
 		prl.update_guest_tools = true
-		#prl.gui = true
 	end
 end

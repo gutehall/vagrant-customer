@@ -1,12 +1,13 @@
 #!/bin/bash
 
+# Before running the script, comment out what's not needed in main function below.
+
 PACKAGE_MANAGER="sudo apt-get"
 UPDATE="${PACKAGE_MANAGER} update"
 INSTALL="${PACKAGE_MANAGER} -y install"
 
 # Function to install GitHub CLI
 install_gh_cli() {
-    echo "Installing GitHub CLI..."
     curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg &&
         sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg &&
         echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list >/dev/null &&
@@ -15,7 +16,6 @@ install_gh_cli() {
 
 # Function to install AWS CLI v2
 install_aws_cli() {
-    echo "Installing AWS CLI..."
     curl "https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip" -o "awscliv2.zip"
     unzip -q awscliv2.zip
     sudo ./aws/install
@@ -24,7 +24,6 @@ install_aws_cli() {
 
 # Function to install Azure CLI
 install_azure_cli() {
-    echo "Installing Azure CLI..."
     echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/azure-cli.list
     curl -sL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/microsoft.gpg >/dev/null
     ${UPDATE} && ${INSTALL} azure-cli
@@ -32,7 +31,6 @@ install_azure_cli() {
 
 # Funtion to install Gcloud CLI
 install_gcloud_cli() {
-    echo "Installing Gcloud CLI..."
     curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg
     echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
     ${UPDATE} && ${INSTALL} google-cloud-cli google-cloud-cli-minikube kubectl
@@ -115,7 +113,7 @@ install_infracost() {
     curl -fsSL https://raw.githubusercontent.com/infracost/infracost/master/scripts/install.sh | sh
 }
 
-# Main function. Comment out the ones you don't need.
+# Main function.
 main() {
     install_gh_cli
     install_aws_cli

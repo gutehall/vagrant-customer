@@ -1,56 +1,45 @@
-#!/bin/sh -eux
+#!/bin/bash
+set -eux
 
-dpkg --list |
-    awk '{ print $2 }' |
-    grep 'linux-headers' |
-    xargs apt-get -y purge
-
-dpkg --list |
-    awk '{ print $2 }' |
-    grep 'linux-image-.*-generic' |
-    grep -v "$(uname -r)" |
-    xargs apt-get -y purge
-
-dpkg --list |
-    awk '{ print $2 }' |
-    grep 'linux-modules-.*-generic' |
-    grep -v "$(uname -r)" |
-    xargs apt-get -y purge
-
-dpkg --list |
-    awk '{ print $2 }' |
-    grep linux-source |
-    xargs apt-get -y purge
-
-dpkg --list |
-    awk '{ print $2 }' |
-    grep -- '-dev\(:[a-z0-9]\+\)\?$' |
-    xargs apt-get -y purge
-
-dpkg --list |
-    awk '{ print $2 }' |
-    grep -- '-doc$' |
-    xargs apt-get -y purge
-
-rm -rf /lib/firmware/*
-rm -rf /usr/share/doc/linux-firmware/*
-
-apt-get -y autoremove && apt-get -y clean
-
-rm -rf /usr/share/doc/*
-
-find /var/cache -type f -exec rm -rf {} \;
-
-find /var/log -type f -exec truncate --size=0 {} \;
-
-truncate -s 0 /etc/machine-id
-if test -f /var/lib/dbus/machine-id; then
-    truncate -s 0 /var/lib/dbus/machine-id
+# Check for root privileges
+if [ "$(id -u)" -ne 0 ]; then
+    echo "This script must be run as root."
+    exit 1
 fi
 
-rm -rf /tmp/* /var/tmp/*
+# Store the list of packages in a variable
+package_list=$(dpkg --list | awk '{ print $2 }')
 
-rm -f /var/lib/systemd/random-seed
+# Remove unnecessary packages
+echo "$package_list" | grep 'linux-headers' | xargs apt-get -y purge
+echo "$package_list" | grep 'linux-image-.*-generic' | grep -v "$(uname -r)" | xargs apt-get -y purge
+echo "$package_list" | grep 'linux-modules-.*-generic' | grep -v "$(uname -r)" | xargs apt-get -y purge
+echo "$package_list" | grep 'linux-source' | xargs apt-get -y purge
+echo "$package_list" | grep -- '-dev\(:[a-z0-9]\+\)\?$' | xargs apt-get -y purge
+echo "$package_list" | grep -- '-doc$' | xargs apt-get -y purge
 
+# Combine cleanup commands
+rm -rf /lib/firmware/* /usr/share/doc/linux-firmware/* /usr/share/doc/* /tmp/* /var/tmp/* /var/cache /var/log
+
+# Remove specific files if they exist
+if [ -e /var/lib/systemd/random-seed ]; then
+    rm -f /var/lib/systemd/random-seed
+fi
+
+# Truncate files
+truncate -s 0 /etc/machine-id /var/lib/dbus/machine-id
+
+# Combine find commands
+find /var/cache /var/log -type f -exec rm -rf {} \;
+
+# Additional cleanup
+apt-get -y autoremove --purge
+apt-get -y clean
+
+# Remove wget history file
 rm -f /root/.wget-hsts
+
+# Clear command history
 export HISTSIZE=0
+
+echo "Cleanup completed successfully."
