@@ -1,6 +1,5 @@
 #!/bin/bash
 
-TARGET_USER="vagrant"
 PACKAGE_MANAGER="sudo apt-get"
 UPDATE="${PACKAGE_MANAGER} update"
 INSTALL="${PACKAGE_MANAGER} -y install"
@@ -30,6 +29,15 @@ install_azure_cli() {
     curl -sL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/microsoft.gpg >/dev/null
     ${UPDATE} && ${INSTALL} azure-cli
 }
+
+# Funtion to install Gcloud CLI
+install_gcloud_cli() {
+    echo "Installing Gcloud CLI..."
+    curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg
+    echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+    ${UPDATE} && ${INSTALL} google-cloud-cli google-cloud-cli-minikube kubectl
+
+# If installing Gcloud, comment out minikube & kubectl in main function.
 
 # Function to install Minikube
 install_minikube() {
@@ -107,11 +115,12 @@ install_infracost() {
     curl -fsSL https://raw.githubusercontent.com/infracost/infracost/master/scripts/install.sh | sh
 }
 
-# Main function
+# Main function. Comment out the ones you don't need.
 main() {
     install_gh_cli
     install_aws_cli
     install_azure_cli
+    install_gcloud_cli
     install_minikube
     install_kubectl
     install_opa
