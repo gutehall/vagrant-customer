@@ -1,21 +1,24 @@
 $script = <<-'SCRIPT'
 
+	USER="sudo -u vagrant"
+
 	# ultimate vimrc
-	sudo -u vagrant git clone --depth=1 https://github.com/amix/vimrc.git /home/vagrant/.vim_runtime
-	sudo -u vagrant sh /home/vagrant/.vim_runtime/install_awesome_vimrc.sh
+	${USER} git clone --depth=1 https://github.com/amix/vimrc.git /home/vagrant/.vim_runtime
+	${USER} sh /home/vagrant/.vim_runtime/install_awesome_vimrc.sh
 
 	# oh-my-zsh
-	sudo -u vagrant sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+	${USER} sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 
 	# zsh plugin
-	sudo -u vagrant git clone https://github.com/zsh-users/zsh-autosuggestions /home/vagrant/.oh-my-zsh/custom/plugins/zsh-autosuggestions
-	sudo -u vagrant git clone https://github.com/zsh-users/zsh-syntax-highlighting.git /home/vagrant/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
-	sudo -u vagrant git clone https://github.com/MohamedElashri/exa-zsh /home/vagrant/.oh-my-zsh/custom/plugins/exa-zsh
+	${USER} git clone https://github.com/zsh-users/zsh-autosuggestions /home/vagrant/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+	${USER} git clone https://github.com/zsh-users/zsh-syntax-highlighting.git /home/vagrant/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+	${USER} git clone https://github.com/MohamedElashri/exa-zsh /home/vagrant/.oh-my-zsh/custom/plugins/exa-zsh
 
 	# themes
-	sudo -u vagrant mkdir -p /home/vagrant/.vim/colors
-	sudo -u vagrant curl -sSL https://github.com/jnurmine/Zenburn/blob/master/colors/zenburn.vim >/home/vagrant/.vim/colors/zenburn.vim
-	sudo -u vagrant curl -sSL https://github.com/caiogondim/bullet-train.zsh/blob/master/bullet-train.zsh-theme >/home/vagrant/.oh-my-zsh/themes/bullet-train.zsh-theme
+	${USER} mkdir -p /home/vagrant/.vim/colors/
+	${USER} curl -sSL https://github.com/jnurmine/Zenburn/blob/master/colors/zenburn.vim >/home/vagrant/.vim/colors/zenburn.vim
+	# change this when the file is rendering proper
+	# ${USER} curl -sSL https://github.com/caiogondim/bullet-train.zsh/blob/master/bullet-train.zsh-theme >/home/vagrant/.oh-my-zsh/themes/bullet-train.zsh-theme
 
 SCRIPT
 
@@ -34,6 +37,7 @@ Vagrant.configure(2) do |config|
 	config.vm.provision "shell", path: "../scripts/install.sh"
 	config.vm.provision "file", source: "../files/.zshrc", destination: "/home/vagrant/.zshrc"
 	config.vm.provision "file", source: "../files/.vimrc", destination: "/home/vagrant/.vimrc"
+	config.vm.provision "file", source: "source/bullet-train.zsh-theme", destination: "/home/vagrant/.oh-my-zsh/themes/bullet-train.zsh-theme"
 	config.vm.provision "shell", path: "../scripts/cleanup.sh"
 
 	config.vm.provider "parallels" do |prl|

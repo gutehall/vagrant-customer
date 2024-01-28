@@ -19,7 +19,7 @@ echo "$package_list" | grep -- '-dev\(:[a-z0-9]\+\)\?$' | xargs apt-get -y purge
 echo "$package_list" | grep -- '-doc$' | xargs apt-get -y purge
 
 # Combine cleanup commands
-rm -rf /lib/firmware/* /usr/share/doc/linux-firmware/* /usr/share/doc/* /tmp/* /var/tmp/* /var/cache /var/log
+rm -rf /lib/firmware/* /usr/share/doc/linux-firmware/* /usr/share/doc/* /tmp/* /var/tmp/* #/var/cache /var/log
 
 # Remove specific files if they exist
 if [ -e /var/lib/systemd/random-seed ]; then
