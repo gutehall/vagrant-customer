@@ -35,7 +35,7 @@ prl.name = \"$folder_name\"
 " Vagrantfile >temp_Vagrantfile
 mv temp_Vagrantfile Vagrantfile
 
-# Function to prompt the user for installation choices and echo into functions.sh
+# Function to prompt the user for installation choices and echo into install.sh
 prompt_installation() {
     local choices=()
     local choice
@@ -109,9 +109,9 @@ $escaped_function_name
     done
 }
 
-# Call the function to prompt the user for installation choices and echo into functions.sh
+# Call the function to prompt the user for installation choices and echo into install.sh
 prompt_installation
 
-# Run vagrant up
+# Run vagrant up and build the machine
 echo "Running vagrant up"
 vagrant up
