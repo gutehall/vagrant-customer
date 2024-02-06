@@ -5,7 +5,7 @@ echo "Enter the name for the new customer: "
 read folder_name
 
 # Create the customer folder locally
-echo "Enter the path where you want to create the customer folder: "
+echo "Enter the path where you want to create the customer folder locally: "
 read local_path
 
 # Validate local path - check if it exists
@@ -17,17 +17,24 @@ fi
 # Create the new folder
 if mkdir "customer/$folder_name" && mkdir "$local_path/$folder_name"; then
     echo "Folders 'customer/$folder_name' and '$local_path/$folder_name' created successfully."
+
+    # Copy files into the new folder
+    echo "Copying files into '$folder_name'..."
+    source_files=("Vagrantfile" "scripts/install.sh")
+
+    for file in "${source_files[@]}"; do
+        if [ -e "$file" ]; then
+            cp "$file" "customer/$folder_name/$file"
+            cp "$file" "$local_path/$folder_name/$file"
+            echo "File '$file' copied successfully."
+        else
+            echo "Error: File '$file' does not exist. Skipping..."
+        fi
+    done
 else
     echo "Error: Failed to create folders."
     exit 1
 fi
-
-# Copy files into the new folder
-echo "Copying files into '$folder_name'..."
-cp Vagrantfile "customer/$folder_name/Vagrantfile"
-cp scripts/install.sh "customer/$folder_name/install.sh"
-
-echo "Files copied successfully. Moving into customer folder"
 
 # Move to the new folder
 cd "customer/$folder_name"

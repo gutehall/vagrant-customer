@@ -17,7 +17,6 @@ $script = <<-'SCRIPT'
 	# Themes
 	${USER} mkdir -p /home/vagrant/.vim/colors/
 	${USER} curl -sSL https://github.com/jnurmine/Zenburn/blob/master/colors/zenburn.vim >/home/vagrant/.vim/colors/zenburn.vim
-	#${USER} curl -sSL https://github.com/caiogondim/bullet-train.zsh/blob/master/bullet-train.zsh-theme >/home/vagrant/.oh-my-zsh/themes/bullet-train.zsh-theme
 
 SCRIPT
 
