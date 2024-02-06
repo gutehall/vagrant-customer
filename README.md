@@ -9,6 +9,12 @@ Before executing the script, ensure that `setup.sh` has executable permissions:
 ```bash
 chmod +x setup.sh
 ```
+And then just run
+
+```bash
+./setup.sh
+```
+
 
 ### Installed Tools
 The script installs the following tools, depending on your selection:
