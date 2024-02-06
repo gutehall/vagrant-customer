@@ -80,7 +80,7 @@ prompt_installation() {
             14) choices+=(install_terraform_docs) ;;
             15) choices+=(install_tfsec) ;;
             16) choices+=(install_infracost) ;;
-            17) break 2 ;;  # Exit the loop if "17" (Exit) is entered
+            17) break 2 ;;
             *) echo "Invalid choice: $choice. Please enter valid numbers from the menu." ;;
             esac
         done
