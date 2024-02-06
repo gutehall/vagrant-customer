@@ -28,7 +28,7 @@ $new_line
 " Vagrantfile >temp_Vagrantfile
 mv temp_Vagrantfile Vagrantfile
 
-# Define the pattern after which the line should be inserted
+# Add customer name into the Vagrantfile
 pattern='prl.cpus = 2'
 sed "/$pattern/a\\
 prl.name = \"$folder_name\"
