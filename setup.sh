@@ -64,7 +64,12 @@ prompt_installation() {
 
         # Check if the user wants to finish
         if [[ $choices_input == "done" ]]; then
-            break
+            read -p "Are you done? (yes/no): " done_input
+            if [[ $done_input == "yes" ]]; then
+                break
+            else
+                continue
+            fi
         fi
 
         # Split input by spaces and append selected choices to the array
