@@ -4,10 +4,23 @@
 echo "Enter the name for the new customer: "
 read folder_name
 
+# Create the customer folder locally
+echo "Enter the path where you want to create the customer folder: "
+read local_path
+
+# Validate local path - check if it exists
+if [ ! -d "$local_path" ]; then
+    echo "Error: The specified path does not exist."
+    exit 1
+fi
+
 # Create the new folder
-mkdir "customer/$folder_name"
-sudo -u mathias mkdir "/Users/mathias/Development/Nordcloud/Clients/$folder_name"
-echo "Folder '$folder_name' created successfully."
+if mkdir "customer/$folder_name" && mkdir "$local_path/$folder_name"; then
+    echo "Folders 'customer/$folder_name' and '$local_path/$folder_name' created successfully."
+else
+    echo "Error: Failed to create folders."
+    exit 1
+fi
 
 # Copy files into the new folder
 echo "Copying files into '$folder_name'..."
@@ -110,11 +123,3 @@ prompt_installation
 # Run vagrant up and build the machine
 echo "Running vagrant up"
 vagrant up
-
-# # Wait for provisioning to finish
-# echo "Waiting for provisioning to finish..."
-# vagrant provision
-
-# # Delete install.sh after provisioning finishes
-# echo "Provisioning finished. Deleting install.sh"
-# rm install.sh
