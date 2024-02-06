@@ -59,8 +59,8 @@ install_opa() {
     rm opa
 }
 
-# Function to install Terraform & Packer
-install_terraform_packer() {
+# Function to install Terraform
+install_terraform() {
     wget -O- https://apt.releases.hashicorp.com/gpg |
         gpg --dearmor |
         tee /usr/share/keyrings/hashicorp-archive-keyring.gpg
@@ -68,7 +68,12 @@ install_terraform_packer() {
     echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] \
     https://apt.releases.hashicorp.com $(lsb_release -cs) main" |
         tee /etc/apt/sources.list.d/hashicorp.list &&
-        $UPDATE && $INSTALL terraform packer
+        $UPDATE && $INSTALL terraform
+}
+
+# Function to install Packer
+install_packer() {
+    $UPDATE && $INSTALL packer
 }
 
 # Function to install Ansible
@@ -112,25 +117,6 @@ install_tfsec() {
 # Function to install Infracost
 install_infracost() {
     curl -fsSL https://raw.githubusercontent.com/infracost/infracost/master/scripts/install.sh | sh
-}
-
-# Main function.
-main() {
-    install_gh_cli
-    install_aws_cli
-    install_azure_cli
-    install_gcloud_cli
-    install_minikube
-    install_kubectl
-    install_opa
-    install_terraform_packer
-    install_ansible
-    install_podman
-    install_terrascan
-    install_terrahub
-    install_terraform_docs
-    install_tfsec
-    install_infracost
 }
 
 # Run the script

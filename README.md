@@ -8,10 +8,10 @@ The script installs the following tools:
 * GitHub CLI
 * AWS CLI v2
 * Azure CLI
-* Google Cloud CLI, Minikube, and Kubectl
-* Minikube (Kubernetes)
-* Kubectl (Kubernetes)
-* Open Policy Agent (OPA)
+* Google Cloud CLI
+* Minikube
+* Kubectl
+* Open Policy Agent
 * Terraform
 * Packer
 * Ansible
@@ -25,7 +25,4 @@ The script installs the following tools:
 
 ### Note
 If installing Google Cloud CLI, comment out Minikube and Kubectl installation in the main function.
-
-### Contribution
-Feel free to contribute by adding more tools or improving the existing installation functions. Open an issue or submit a pull request to suggest changes.
 
