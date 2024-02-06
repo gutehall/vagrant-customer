@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Prompt the user for the folder name
-echo "Enter the name for the new folder: "
+echo "Enter the name for the new customer: "
 read folder_name
 
 # Create the new folder
@@ -40,7 +40,7 @@ prompt_installation() {
     local choice
 
     while true; do
-        echo "Which functions would you like to install? (Enter the numbers separated by spaces or 'done' to finish)"
+        echo "Which applications would you like to install? (Enter the numbers separated by spaces)"
         echo "1. GitHub CLI"
         echo "2. AWS CLI v2"
         echo "3. Azure CLI"
@@ -61,16 +61,6 @@ prompt_installation() {
 
         read -p "Enter your choices (space-separated): " choices_input
 
-        # Check if the user wants to finish
-        if [[ $choices_input == "done" ]]; then
-            read -p "Are you done? (yes/no): " done_input
-            if [[ $done_input == "yes" ]]; then
-                break
-            else
-                continue
-            fi
-        fi
-
         # Split input by spaces and append selected choices to the array
         for choice in $choices_input; do
             case $choice in
@@ -90,9 +80,15 @@ prompt_installation() {
             14) choices+=(install_terraform_docs) ;;
             15) choices+=(install_tfsec) ;;
             16) choices+=(install_infracost) ;;
+            17) break 2 ;;  # Exit the loop if "17" (Exit) is entered
             *) echo "Invalid choice: $choice. Please enter valid numbers from the menu." ;;
             esac
         done
+
+        read -p "Are you done selecting applications? (yes/no): " done_input
+        if [[ $done_input == "yes" ]]; then
+            break
+        fi
     done
 
     # Define the path to the install.sh file in the customer folder
@@ -115,10 +111,10 @@ prompt_installation
 echo "Running vagrant up"
 vagrant up
 
-# Wait for provisioning to finish
-echo "Waiting for provisioning to finish..."
-vagrant provision
+# # Wait for provisioning to finish
+# echo "Waiting for provisioning to finish..."
+# vagrant provision
 
-# Delete install.sh after provisioning finishes
-echo "Provisioning finished. Deleting install.sh"
-rm install.sh
+# # Delete install.sh after provisioning finishes
+# echo "Provisioning finished. Deleting install.sh"
+# rm install.sh

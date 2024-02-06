@@ -36,7 +36,7 @@ Vagrant.configure(2) do |config|
 	config.vm.provision "file", source: "../../source/.zshrc", destination: "/home/vagrant/.zshrc"
 	config.vm.provision "file", source: "../../source/.vimrc", destination: "/home/vagrant/.vimrc"
 	config.vm.provision "file", source: "../../source/bullet-train.zsh-theme", destination: "/home/vagrant/.oh-my-zsh/themes/bullet-train.zsh-theme"
-	config.vm.provision "shell", path: "../../source/cleanup.sh"
+	config.vm.provision "shell", path: "../../scripts/cleanup.sh"
 
 	config.vm.provider "parallels" do |prl|
 		prl.memory = 2048
