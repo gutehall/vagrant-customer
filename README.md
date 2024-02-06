@@ -1,7 +1,10 @@
 ## Vagrant DevOps
 This repo is for when I have a new customer and since I don't want to install too much on my laptop I use Vagrant and create a new box for the client. 
-Based on a [Debian 12 arm64](https://app.vagrantup.com/gutehall/boxes/debian-12) box with the most common DevOps tools installed. I'm running this om macos with Parallels so that's what it's been tested on. 
-Before you run the script, make sure that setup.sh has got the right permissions:
+Based on a [Debian 12 arm64](https://app.vagrantup.com/gutehall/boxes/debian-12) box with the most common DevOps tools installed that I use. 
+Tested on macos Sonoma 14.3, Vagrant 2.4.1 and Parallels Desktop 19.
+
+
+Before you run the script, make sure that setup.sh can be run:
 
 ```
 chmod +x setup.sh
