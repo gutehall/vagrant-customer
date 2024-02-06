@@ -1,17 +1,17 @@
-## Vagrant DevOps
-This repo is for when I have a new customer and since I don't want to install too much on my laptop I use Vagrant and create a new box for the client. 
-Based on a [Debian 12 arm64](https://app.vagrantup.com/gutehall/boxes/debian-12) box with the most common DevOps tools installed that I use. 
-Tested on macos Sonoma 14.3, Vagrant 2.4.1 and Parallels Desktop 19.
+## Vagrant DevOps Setup
 
+This repository facilitates setting up a development environment for new clients using Vagrant. It avoids cluttering the local machine by provisioning a new box specifically tailored for the client's needs. The base box used is [Debian 12 arm64](https://app.vagrantup.com/gutehall/boxes/debian-12), featuring essential DevOps tools commonly utilized in such scenarios.
 
-Before you run the script, make sure that setup.sh can be run:
+Tested on macOS Sonoma 14.3, Vagrant 2.4.1, and Parallels Desktop 19.
 
-```
+Before executing the script, ensure that `setup.sh` has executable permissions:
+
+```bash
 chmod +x setup.sh
 ```
 
-### Tools that you can install
-The script installs the following tools depending on what you choose:
+### Installed Tools
+The script installs the following tools, depending on your selection:
 
 * GitHub CLI
 * AWS CLI v2
@@ -32,8 +32,7 @@ The script installs the following tools depending on what you choose:
 * Infracost
 
 ### Note
-If installing Google Cloud CLI, comment out Minikube and Kubectl installation in the main function.
+If installing the Google Cloud CLI, please comment out the Minikube and Kubectl installation in the main function.
 
-### Something missing?
-If something is missing or you just want to make it better then you're welcome.
-
+### Feedback and Contributions
+Your feedback and contributions to enhance this setup are greatly appreciated. Feel free to suggest improvements or additions.
