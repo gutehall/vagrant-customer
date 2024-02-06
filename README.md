@@ -1,6 +1,9 @@
 ## Vagrant DevOps
-An Debain 12 arm64 box with the most common DevOps tools installed. Before building the box, comment out the tools that are not needed under Main function.
+An Debain 12 arm64 box with the most common DevOps tools installed. Before building the box, make sure to run:
 
+```
+chmod +x setup.sh
+```
 
 ### Tools Installed
 The script installs the following tools:
