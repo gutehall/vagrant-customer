@@ -3,7 +3,7 @@
 ### Visual Studio Code
 
 ```
-Host CUSTOMER_NAM
+Host CUSTOMER_NAME
   HostName XXX.XXX.XXX.XXX
   User vagrant
   Port 22
