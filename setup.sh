@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # Prompt the user for the folder name
-echo "Enter the name for the new customer: "
+echo "Enter the name for the new client: "
 read folder_name
 
-# Create the customer folder locally
-echo "Enter the path where you want to create the customer folder locally: "
+# Create the client folder locally
+echo "Enter the path where you want to create the client folder locally: "
 read local_path
 
 # Validate local path - check if it exists
@@ -15,8 +15,8 @@ if [ ! -d "$local_path" ]; then
 fi
 
 # Create the new folder
-if mkdir "customer/$folder_name" && mkdir "$local_path/$folder_name"; then
-    echo "Folders 'customer/$folder_name' and '$local_path/$folder_name' created successfully."
+if mkdir "client/$folder_name" && mkdir "$local_path/$folder_name"; then
+    echo "Folders 'client/$folder_name' and '$local_path/$folder_name' created successfully."
 
     # Copy files into the new folder
     echo "Copying files into '$folder_name'..."
@@ -24,7 +24,7 @@ if mkdir "customer/$folder_name" && mkdir "$local_path/$folder_name"; then
 
     for file in "${source_files[@]}"; do
         if [ -e "$file" ]; then
-            cp "$file" "customer/$folder_name/$file"
+            cp "$file" "client/$folder_name/$file"
             cp "$file" "$local_path/$folder_name/$file"
             echo "File '$file' copied successfully."
         else
@@ -37,9 +37,9 @@ else
 fi
 
 # Move to the new folder
-cd "customer/$folder_name"
+cd "client/$folder_name"
 
-# Add customer folder into the Vagrantfile
+# Add client folder into the Vagrantfile
 new_line="config.vm.synced_folder \"~/Development/Nordcloud/Clients/$folder_name\", \"/home/vagrant/\", :owner => \"vagrant\""
 pattern='config.vm.box_version = "2024.01.21"'
 sed "\|$pattern|a\\
@@ -47,7 +47,7 @@ $new_line
 " Vagrantfile >temp_Vagrantfile
 mv temp_Vagrantfile Vagrantfile
 
-# Add customer name into the Vagrantfile
+# Add client name into the Vagrantfile
 pattern='prl.cpus = 2'
 sed "/$pattern/a\\
 prl.name = \"$folder_name\"
@@ -111,7 +111,7 @@ prompt_installation() {
         fi
     done
 
-    # Define the path to the install.sh file in the customer folder
+    # Define the path to the install.sh file in the client folder
     install_script="install.sh"
 
     # Insert the choices before the main function in the install.sh file
