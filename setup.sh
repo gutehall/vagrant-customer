@@ -114,3 +114,11 @@ prompt_installation
 # Run vagrant up and build the machine
 echo "Running vagrant up"
 vagrant up
+
+# Wait for provisioning to finish
+echo "Waiting for provisioning to finish..."
+vagrant provision
+
+# Delete install.sh after provisioning finishes
+echo "Provisioning finished. Deleting install.sh"
+rm install.sh
