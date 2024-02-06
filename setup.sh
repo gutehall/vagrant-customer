@@ -13,7 +13,6 @@ echo "Folder '$folder_name' created successfully."
 echo "Copying files into '$folder_name'..."
 cp Vagrantfile "customer/$folder_name/Vagrantfile"
 cp scripts/install.sh "customer/$folder_name/install.sh"
-cp scripts/cleanup.sh "customer/$folder_name/cleanup.sh"
 
 echo "Files copied successfully. Moving into customer folder"
 
