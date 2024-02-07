@@ -26,6 +26,7 @@ Vagrant.configure(2) do |config|
   	end
 	config.vm.box = "gutehall/debian-12"
 	config.vm.box_check_update = false
+	config.vm.provision "shell", inline: "mkdir -p /home/vagrant/code"
 	config.vm.provision "shell", inline: $script
 	config.vm.provision "shell", inline: "sudo chsh -s /bin/zsh vagrant"
 	config.vm.provision "shell", path: "install.sh"
