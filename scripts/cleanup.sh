@@ -11,26 +11,17 @@ fi
 package_list=$(dpkg --list | awk '{ print $2 }')
 
 # Remove unnecessary packages
-echo "$package_list" | grep 'linux-headers' | xargs apt-get -y purge
-echo "$package_list" | grep 'linux-image-.*-generic' | grep -v "$(uname -r)" | xargs apt-get -y purge
-echo "$package_list" | grep 'linux-modules-.*-generic' | grep -v "$(uname -r)" | xargs apt-get -y purge
-echo "$package_list" | grep 'linux-source' | xargs apt-get -y purge
-echo "$package_list" | grep -- '-dev\(:[a-z0-9]\+\)\?$' | xargs apt-get -y purge
-echo "$package_list" | grep -- '-doc$' | xargs apt-get -y purge
+echo "$package_list" | grep -E 'linux-(headers|image|modules|source)' | grep -v "$(uname -r)" | xargs apt-get -y purge
+echo "$package_list" | grep -- '-dev\(:[a-z0-9]\+\)\?\|-doc$' | xargs apt-get -y purge
 
 # Combine cleanup commands
-rm -rf /lib/firmware/* /usr/share/doc/linux-firmware/* /usr/share/doc/* /tmp/* /var/tmp/* #/var/cache /var/log
+rm -rf /lib/firmware/* /usr/share/doc/linux-firmware/* /usr/share/doc/* /tmp/* /var/tmp/*
 
 # Remove specific files if they exist
-if [ -e /var/lib/systemd/random-seed ]; then
-    rm -f /var/lib/systemd/random-seed
-fi
+rm -f /var/lib/systemd/random-seed /etc/machine-id /var/lib/dbus/machine-id
 
-# Truncate files
-truncate -s 0 /etc/machine-id /var/lib/dbus/machine-id
-
-# Combine find commands
-find /var/cache /var/log -type f -exec rm -rf {} \;
+# Combine find commands for cleanup
+find /var/cache /var/log -type f -delete
 
 # Additional cleanup
 apt-get -y autoremove --purge
