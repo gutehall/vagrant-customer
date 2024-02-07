@@ -38,7 +38,7 @@ The script installs the following tools, depending on your selection:
 * Infracost
 
 ### Note
-If installing the Google Cloud CLI, please comment out the Minikube and Kubectl installation in the main function.
+If installing the Google Cloud CLI, do not select Minikube and Kubectl from the list since they are included in the bundle.
 
 ### Feedback and Contributions
 Your feedback and contributions to enhance this setup are greatly appreciated. Feel free to suggest improvements or additions.
