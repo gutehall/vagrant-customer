@@ -36,7 +36,14 @@ install_gcloud_cli() {
     ${UPDATE} && ${INSTALL} google-cloud-cli
 }
 
-# If installing Gcloud, comment out minikube & kubectl in main function.
+# Function to install PowerShell
+install_powershell() {
+    source /etc/os-release
+    wget -q https://packages.microsoft.com/config/debian/$VERSION_ID/packages-microsoft-prod.deb
+    sudo dpkg -i packages-microsoft-prod.deb
+    rm packages-microsoft-prod.deb
+    ${UPDATE} && ${INSTALL} powershell
+}
 
 # Function to install Minikube
 install_minikube() {
@@ -156,12 +163,14 @@ install_tflint() {
 
 # Function to install AWS CDK
 install_aws_cdk() {
+    $UPDATE && $INSTALL npm
     npm install -g aws-cdk
 }
 
 # Function to install shfmt
 install_shfmt() {
     curl -sS https://webi.sh/shfmt | sh
+    source ~/.config/envman/PATH.env
 }
 
 # Run the script

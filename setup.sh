@@ -49,10 +49,11 @@ fi
 cd "client/$folder_name"
 
 # Add client folder into the Vagrantfile
-new_line="config.vm.synced_folder \"~/Development/Nordcloud/Clients/$folder_name\", \"/home/vagrant/\", :owner => \"vagrant\""
-pattern='config.vm.box_version = "2024.01.21"'
-sed "\|$pattern|a\\
-$new_line
+# new_line="config.vm.synced_folder \"~/Development/Nordcloud/Clients/$folder_name\", \"/home/vagrant/\", :owner => \"vagrant\""
+pattern='config.vm.box_check_update = false'
+# sed "\|$pattern|a\\
+sed "/$pattern/a\\
+config.vm.synced_folder \"~/Development/Nordcloud/Clients/$folder_name\", \"/home/vagrant/\", :owner => \"vagrant\"
 " Vagrantfile >temp_Vagrantfile
 mv temp_Vagrantfile Vagrantfile
 
@@ -69,67 +70,69 @@ prompt_installation() {
     local choice
 
     while true; do
-        echo "Which applications would you like to install?"
-        echo "   [ ] GitHub CLI"
-        echo "   [ ] AWS CLI v2"
-        echo "   [ ] Azure CLI"
-        echo "   [ ] Gcloud CLI"
-        echo "   [ ] Minikube"
-        echo "   [ ] Kubectl"
-        echo "   [ ] Helm"
-        echo "   [ ] Kind"
-        echo "   [ ] Kustomize"
-        echo "   [ ] Open Policy Agent"
-        echo "   [ ] Terraform"
-        echo "   [ ] Packer"
-        echo "   [ ] Ansible"
-        echo "   [ ] Podman & Podman Compose"
-        echo "   [ ] Colima"
-        echo "   [ ] Terrascan"
-        echo "   [ ] Terrahub"
-        echo "   [ ] Terraform Docs"
-        echo "   [ ] Tfsec"
-        echo "   [ ] Infracost"
-        echo "   [ ] Tfswitch"
-        echo "   [ ] Tflint"
-        echo "   [ ] AWS-CDK"
-        echo "   [ ] Shfmt"
-        echo "   [x] Exit"
+        echo "Which applications would you like to install? (Enter the numbers separated by spaces)"
+        echo "0. Select All"
+        echo "1. GitHub CLI"
+        echo "2. AWS CLI v2"
+        echo "3. Azure CLI"
+        echo "4. Gcloud CLI"
+        echo "5. PowerShell"
+        echo "6. Minikube"
+        echo "7. Kubectl"
+        echo "8. Helm"
+        echo "9. Kind"
+        echo "10. Kustomize"
+        echo "11. Open Policy Agent"
+        echo "12. Terraform"
+        echo "13. Packer"
+        echo "14. Ansible"
+        echo "15. Podman & Podman Compose"
+        echo "16. Colima"
+        echo "17. Terrascan"
+        echo "18. Terrahub"
+        echo "19. Terraform Docs"
+        echo "20. Tfsec"
+        echo "21. Infracost"
+        echo "22. Tfswitch"
+        echo "23. Tflint"
+        echo "24. Shfmt"
+        echo "25. Exit"
 
         read -p "Enter your choices (space-separated): " choices_input
 
-        # If "Exit" is chosen, break the loop
-        if [[ $choices_input == *"Exit"* ]]; then
-            break
+        # If "Select All" is chosen, set choices to all available options
+        if [[ $choices_input == "0" ]]; then
+            choices=(install_gh_cli install_aws_cli install_azure_cli install_gcloud_cli install_minikube install_kubectl install_helm install_opa install_terraform install_packer install_ansible install_podman install_colima install_terrascan install_terrahub install_terraform_docs install_tfsec install_infracost install_tfswitch install_tflint install_powershell install_kind install_kustomize install_shfmt)
         else
             # Split input by spaces and append selected choices to the array
             for choice in $choices_input; do
                 case $choice in
-                "GitHub") choices+=(install_gh_cli) ;;
-                "AWS") choices+=(install_aws_cli) ;;
-                "Azure") choices+=(install_azure_cli) ;;
-                "Gcloud") choices+=(install_gcloud_cli) ;;
-                "Minikube") choices+=(install_minikube) ;;
-                "Kubectl") choices+=(install_kubectl) ;;
-                "Helm") choices+=(install_helm) ;;
-                "Kind") choices+=(install_kind) ;;
-                "Kustomize") choices+=(install_kustomize) ;;
-                "Open") choices+=(install_opa) ;;
-                "Terraform") choices+=(install_terraform) ;;
-                "Packer") choices+=(install_packer) ;;
-                "Ansible") choices+=(install_ansible) ;;
-                "Podman") choices+=(install_podman) ;;
-                "Colima") choices+=(install_colima) ;;
-                "Terrascan") choices+=(install_terrascan) ;;
-                "Terrahub") choices+=(install_terrahub) ;;
-                "Terraform") choices+=(install_terraform_docs) ;;
-                "Tfsec") choices+=(install_tfsec) ;;
-                "Infracost") choices+=(install_infracost) ;;
-                "Tfswitch") choices+=(install_tfswitch) ;;
-                "Tflint") choices+=(install_tflint) ;;
-                "AWS-CDK") choices+=(install_aws_cdk) ;;
-                "Shfmt") choices+=(install_shfmt) ;;
-                *) echo "Invalid choice: $choice. Please enter valid options from the menu." ;;
+                1) choices+=(install_gh_cli) ;;
+                2) choices+=(install_aws_cli) ;;
+                3) choices+=(install_azure_cli) ;;
+                4) choices+=(install_gcloud_cli) ;;
+                5) choices+=(install_powershell) ;;
+                6) choices+=(install_minikube) ;;
+                7) choices+=(install_kubectl) ;;
+                8) choices+=(install_helm) ;;
+                9) choices+=(install_kind) ;;
+                10) choices+=(install_kustomize) ;;
+                11) choices+=(install_opa) ;;
+                12) choices+=(install_terraform) ;;
+                13) choices+=(install_packer) ;;
+                14) choices+=(install_ansible) ;;
+                15) choices+=(install_podman) ;;
+                16) choices+=(install_colima) ;;
+                17) choices+=(install_terrascan) ;;
+                18) choices+=(install_terrahub) ;;
+                19) choices+=(install_terraform_docs) ;;
+                20) choices+=(install_tfsec) ;;
+                21) choices+=(install_infracost) ;;
+                22) choices+=(install_tfswitch) ;;
+                23) choices+=(install_tflint) ;;
+                24) choices+=(install_shfmt) ;;
+                25) break 2 ;;
+                *) echo "Invalid choice: $choice. Please enter valid numbers from the menu." ;;
                 esac
             done
         fi
