@@ -6,6 +6,14 @@ PACKAGE_MANAGER="sudo apt-get"
 UPDATE="${PACKAGE_MANAGER} update"
 INSTALL="${PACKAGE_MANAGER} -y install"
 
+# Function to install Brew
+install_brew() {
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    test -d ~/.linuxbrew && eval "$(~/.linuxbrew/bin/brew shellenv)"
+    test -d /home/linuxbrew/.linuxbrew && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    echo "eval \"\$($(brew --prefix)/bin/brew shellenv)\"" >>~/.zshrc
+}
+
 # Function to install GitHub CLI
 install_gh_cli() {
     curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg &&
