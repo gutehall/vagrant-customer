@@ -4,8 +4,14 @@
 echo "Enter the name for the new client: "
 read folder_name
 
+# Validate folder name - check if it contains only alphanumeric characters
+if [[ ! "$folder_name" =~ ^[[:alnum:]]+$ ]]; then
+    echo "Error: Folder name can only contain letters and numbers."
+    exit 1
+fi
+
 # Create the client folder locally
-echo "Enter the path where you want to create the client folder locally: "
+echo "Enter the path where you want to sync locally: "
 read local_path
 
 # Validate local path - check if it exists
@@ -15,18 +21,21 @@ if [ ! -d "$local_path" ]; then
 fi
 
 # Create the new folder
-if mkdir "client/$folder_name" && mkdir "$local_path/$folder_name"; then
+if mkdir "client/$folder_name" && sudo -u mathias mkdir "$local_path/$folder_name"; then
     echo "Folders 'client/$folder_name' and '$local_path/$folder_name' created successfully."
 
     # Copy files into the new folder
-    echo "Copying files into '$folder_name'..."
     source_files=("Vagrantfile" "scripts/install.sh")
 
     for file in "${source_files[@]}"; do
         if [ -e "$file" ]; then
-            cp "$file" "client/$folder_name/$file"
-            cp "$file" "$local_path/$folder_name/$file"
-            echo "File '$file' copied successfully."
+            if [ "$file" == "scripts/install.sh" ]; then
+                cp "$file" "client/$folder_name/install.sh"
+                echo "File 'install.sh' copied successfully."
+            else
+                cp "$file" "client/$folder_name/$file"
+                echo "File '$file' copied successfully."
+            fi
         else
             echo "Error: File '$file' does not exist. Skipping..."
         fi
@@ -61,6 +70,7 @@ prompt_installation() {
 
     while true; do
         echo "Which applications would you like to install? (Enter the numbers separated by spaces)"
+        echo "0. Select All"
         echo "1. GitHub CLI"
         echo "2. AWS CLI v2"
         echo "3. Azure CLI"
@@ -81,29 +91,34 @@ prompt_installation() {
 
         read -p "Enter your choices (space-separated): " choices_input
 
-        # Split input by spaces and append selected choices to the array
-        for choice in $choices_input; do
-            case $choice in
-            1) choices+=(install_gh_cli) ;;
-            2) choices+=(install_aws_cli) ;;
-            3) choices+=(install_azure_cli) ;;
-            4) choices+=(install_gcloud_cli) ;;
-            5) choices+=(install_minikube) ;;
-            6) choices+=(install_kubectl) ;;
-            7) choices+=(install_opa) ;;
-            8) choices+=(install_terraform) ;;
-            9) choices+=(install_packer) ;;
-            10) choices+=(install_ansible) ;;
-            11) choices+=(install_podman) ;;
-            12) choices+=(install_terrascan) ;;
-            13) choices+=(install_terrahub) ;;
-            14) choices+=(install_terraform_docs) ;;
-            15) choices+=(install_tfsec) ;;
-            16) choices+=(install_infracost) ;;
-            17) break 2 ;;
-            *) echo "Invalid choice: $choice. Please enter valid numbers from the menu." ;;
-            esac
-        done
+        # If "Select All" is chosen, set choices to all available options
+        if [[ $choices_input == "0" ]]; then
+            choices=(install_gh_cli install_aws_cli install_azure_cli install_gcloud_cli install_minikube install_kubectl install_opa install_terraform install_packer install_ansible install_podman install_terrascan install_terrahub install_terraform_docs install_tfsec install_infracost)
+        else
+            # Split input by spaces and append selected choices to the array
+            for choice in $choices_input; do
+                case $choice in
+                1) choices+=(install_gh_cli) ;;
+                2) choices+=(install_aws_cli) ;;
+                3) choices+=(install_azure_cli) ;;
+                4) choices+=(install_gcloud_cli) ;;
+                5) choices+=(install_minikube) ;;
+                6) choices+=(install_kubectl) ;;
+                7) choices+=(install_opa) ;;
+                8) choices+=(install_terraform) ;;
+                9) choices+=(install_packer) ;;
+                10) choices+=(install_ansible) ;;
+                11) choices+=(install_podman) ;;
+                12) choices+=(install_terrascan) ;;
+                13) choices+=(install_terrahub) ;;
+                14) choices+=(install_terraform_docs) ;;
+                15) choices+=(install_tfsec) ;;
+                16) choices+=(install_infracost) ;;
+                17) break 2 ;;
+                *) echo "Invalid choice: $choice. Please enter valid numbers from the menu." ;;
+                esac
+            done
+        fi
 
         read -p "Are you done selecting applications? (yes/no): " done_input
         if [[ $done_input == "yes" ]]; then

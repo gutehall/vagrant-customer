@@ -24,10 +24,7 @@ Vagrant.configure(2) do |config|
 	if Vagrant.has_plugin?("vagrant-timezone")
     	config.timezone.value = "Europe/Stockholm"
   	end
-	# config.vm.box = "gutehall/ubuntu23-04"
-	# config.vm.box_version = "2024.01.17"
 	config.vm.box = "gutehall/debian-12"
-	config.vm.box_version = "2024.01.21"
 	config.vm.box_check_update = false
 	config.vm.provision "shell", inline: $script
 	config.vm.provision "shell", inline: "sudo chsh -s /bin/zsh vagrant"
