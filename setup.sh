@@ -156,7 +156,6 @@ $escaped_function_name
 # Call the function to prompt the user for installation choices and echo into install.sh
 prompt_installation
 
-
 # Run vagrant up and build the machine
 echo "Running vagrant up"
 vagrant up
