@@ -70,7 +70,6 @@ prompt_installation() {
 
     while true; do
         echo "Which applications would you like to install?"
-        echo "   [ ] HomeBrew"
         echo "   [ ] GitHub CLI"
         echo "   [ ] AWS CLI v2"
         echo "   [ ] Azure CLI"
@@ -106,7 +105,6 @@ prompt_installation() {
             # Split input by spaces and append selected choices to the array
             for choice in $choices_input; do
                 case $choice in
-                "HomeBrew") choices+=(install_brew) ;;
                 "GitHub") choices+=(install_gh_cli) ;;
                 "AWS") choices+=(install_aws_cli) ;;
                 "Azure") choices+=(install_azure_cli) ;;
