@@ -52,6 +52,25 @@ install_kubectl() {
     rm kubectl
 }
 
+# Function to install Helm
+install_helm() {
+    curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg >/dev/null
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+    ${UPDATE} && ${INSTALL} helm
+}
+
+# Function to install Kind
+install_kind() {
+    [ $(uname -m) = aarch64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.21.0/kind-linux-arm64
+    chmod +x ./kind
+    sudo mv ./kind /usr/local/bin/kind
+}
+
+# Function to install Kustomize
+install_kustomize() {
+    curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
+}
+
 # Function to install Open Policy Agent
 install_opa() {
     curl -L -o opa https://openpolicyagent.org/downloads/v0.60.0/opa_linux_amd64_static &&
@@ -88,6 +107,12 @@ install_podman() {
     pip3 install podman-compose
 }
 
+# Function to install Colima
+install_colima() {
+    curl -LO https://github.com/abiosoft/colima/releases/download/v0.6.0/colima-$(uname)-$(uname -m)
+    install colima-$(uname)-$(uname -m) /usr/local/bin/colima
+}
+
 # Function to install Terrascan
 install_terrascan() {
     curl -L "$(curl -s https://api.github.com/repos/tenable/terrascan/releases/latest | grep -o -E "https://.+?_Linux_x86_64.tar.gz")" >terrascan.tar.gz
@@ -117,6 +142,26 @@ install_tfsec() {
 # Function to install Infracost
 install_infracost() {
     curl -fsSL https://raw.githubusercontent.com/infracost/infracost/master/scripts/install.sh | sh
+}
+
+# Function to install TFSwitch
+install_tfswitch() {
+    curl -L https://raw.githubusercontent.com/warrensbox/terraform-switcher/release/install.sh | bash
+}
+
+# Function to install TFLint
+install_tflint() {
+    curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
+}
+
+# Function to install AWS CDK
+install_aws_cdk() {
+    npm install -g aws-cdk
+}
+
+# Function to install shfmt
+install_shfmt() {
+    curl -sS https://webi.sh/shfmt | sh
 }
 
 # Run the script
