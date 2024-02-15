@@ -29,6 +29,13 @@ install_azure_cli() {
     ${UPDATE} && ${INSTALL} azure-cli
 }
 
+# Function to install Bicep
+install_bicep() {
+    curl -Lo bicep https://github.com/Azure/bicep/releases/latest/download/bicep-linux-x64
+    chmod +x ./bicep
+    sudo mv ./bicep /usr/local/bin/bicep
+}
+
 # Function to install Gcloud CLI
 install_gcloud_cli() {
     curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg

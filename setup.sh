@@ -75,26 +75,27 @@ prompt_installation() {
         echo "1. GitHub CLI"
         echo "2. AWS CLI v2"
         echo "3. Azure CLI"
-        echo "4. Gcloud CLI"
-        echo "5. Minikube"
-        echo "6. Kubectl"
-        echo "7. Helm"
-        echo "8. Kind"
-        echo "9. Kustomize"
-        echo "10. Open Policy Agent"
-        echo "11. Terraform"
-        echo "12. Packer"
-        echo "13. Ansible"
-        echo "14. Podman & Podman Compose"
-        echo "15. Colima"
-        echo "16. Terrascan"
-        echo "17. Terrahub"
-        echo "18. Terraform Docs"
-        echo "19. Tfsec"
-        echo "20. Infracost"
-        echo "21. Tfswitch"
-        echo "22. Tflint"
-        echo "23. Exit"
+        echo "4. Bicep"
+        echo "5. Gcloud CLI"
+        echo "6. Minikube"
+        echo "7. Kubectl"
+        echo "8. Helm"
+        echo "9. Kind"
+        echo "10. Kustomize"
+        echo "11. Open Policy Agent"
+        echo "12. Terraform"
+        echo "13. Packer"
+        echo "14. Ansible"
+        echo "15. Podman & Podman Compose"
+        echo "16. Colima"
+        echo "17. Terrascan"
+        echo "18. Terrahub"
+        echo "19. Terraform Docs"
+        echo "20. Tfsec"
+        echo "21. Infracost"
+        echo "22. Tfswitch"
+        echo "23. Tflint"
+        echo "24. Exit"
 
         read -p "Enter your choices (space-separated): " choices_input
 
@@ -108,26 +109,27 @@ prompt_installation() {
                 1) choices+=(install_gh_cli) ;;
                 2) choices+=(install_aws_cli) ;;
                 3) choices+=(install_azure_cli) ;;
-                4) choices+=(install_gcloud_cli) ;;
-                5) choices+=(install_minikube) ;;
-                6) choices+=(install_kubectl) ;;
-                7) choices+=(install_helm) ;;
-                8) choices+=(install_kind) ;;
-                9) choices+=(install_kustomize) ;;
-                10) choices+=(install_opa) ;;
-                11) choices+=(install_terraform) ;;
-                12) choices+=(install_packer) ;;
-                13) choices+=(install_ansible) ;;
-                14) choices+=(install_podman) ;;
-                15) choices+=(install_colima) ;;
-                16) choices+=(install_terrascan) ;;
-                17) choices+=(install_terrahub) ;;
-                18) choices+=(install_terraform_docs) ;;
-                19) choices+=(install_tfsec) ;;
-                20) choices+=(install_infracost) ;;
-                21) choices+=(install_tfswitch) ;;
-                22) choices+=(install_tflint) ;;
-                23) break 2 ;;
+                4) choices+=(install_bicep) ;;
+                5) choices+=(install_gcloud_cli) ;;
+                6) choices+=(install_minikube) ;;
+                7) choices+=(install_kubectl) ;;
+                8) choices+=(install_helm) ;;
+                9) choices+=(install_kind) ;;
+                10) choices+=(install_kustomize) ;;
+                11) choices+=(install_opa) ;;
+                12) choices+=(install_terraform) ;;
+                13) choices+=(install_packer) ;;
+                14) choices+=(install_ansible) ;;
+                15) choices+=(install_podman) ;;
+                16) choices+=(install_colima) ;;
+                17) choices+=(install_terrascan) ;;
+                18) choices+=(install_terrahub) ;;
+                19) choices+=(install_terraform_docs) ;;
+                20) choices+=(install_tfsec) ;;
+                21) choices+=(install_infracost) ;;
+                22) choices+=(install_tfswitch) ;;
+                23) choices+=(install_tflint) ;;
+                24) break 2 ;;
                 *) echo "Invalid choice: $choice. Please enter valid numbers from the menu." ;;
                 esac
             done
