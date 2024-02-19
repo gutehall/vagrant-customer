@@ -22,19 +22,26 @@ The script installs the following tools, depending on your selection:
 * GitHub CLI
 * AWS CLI v2
 * Azure CLI
+* Bicep
 * Google Cloud CLI
 * Minikube
 * Kubectl
+* Helm
+* Kind
+* Kustomize
 * Open Policy Agent
 * Terraform
 * Packer
 * Ansible
 * Podman
 * Podman Compose
+* Colima
 * Terrascan
 * Terrahub
 * Terraform Docs
 * Tfsec
+* Tfswitch
+* Tflint
 * Infracost
 
 ### Feedback and Contributions
