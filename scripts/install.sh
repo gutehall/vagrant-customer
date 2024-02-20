@@ -148,9 +148,21 @@ install_terraform_docs() {
     rm LICENSE README.md
 }
 
+# Function to install TerraTag
+install_terratag() {
+    curl -Lo ./terratag.tar.gz https://github.com/env0/terratag/releases/download/v0.3.1/terratag_0.3.1_linux_arm64.tar.gz
+    tar -xzf terratag.tar.gz && rm terratag.tar.gz
+    chmod +x terratag
+    mv terratag /usr/local/bin/terratag
+    rm LICENSE README.md
+}
+
 # Function to install Tfsec
-install_tfsec() {
-    curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
+install_trivy() {
+    wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | gpg --dearmor | sudo tee /usr/share/keyrings/trivy.gpg >/dev/null
+    echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
+    $UPDATE && $INSTALL trivy
+
 }
 
 # Function to install Infracost
