@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# Before running the script, comment out what's not needed in main function below.
-
 PACKAGE_MANAGER="sudo apt-get"
 UPDATE="${PACKAGE_MANAGER} update"
 INSTALL="${PACKAGE_MANAGER} -y install"
