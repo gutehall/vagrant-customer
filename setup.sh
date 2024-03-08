@@ -163,6 +163,6 @@ prompt_installation
 echo "Running vagrant up"
 vagrant up
 
-# Move to the client folder and running ssh-config
+# Move to the client folder and run ssh-config
 cd client/$folder_name
-vagrant ssh-config
+vagrant ssh-config >> /Users/mathias/.ssh/config
