@@ -49,9 +49,7 @@ fi
 cd "client/$folder_name"
 
 # Add client folder into the Vagrantfile
-# new_line="config.vm.synced_folder \"~/Development/Nordcloud/Clients/$folder_name\", \"/home/vagrant/\", :owner => \"vagrant\""
 pattern='config.vm.box_check_update = false'
-# sed "\|$pattern|a\\
 sed "/$pattern/a\\
 config.vm.synced_folder \"$local_path/$folder_name\", \"/home/vagrant/code/\", :owner => \"vagrant\"
 " Vagrantfile >temp_Vagrantfile
@@ -162,7 +160,3 @@ prompt_installation
 # Run vagrant up and build the machine
 echo "Running vagrant up"
 vagrant up
-
-# Move to the client folder and run ssh-config
-cd client/$folder_name
-vagrant ssh-config >> /Users/mathias/.ssh/config
