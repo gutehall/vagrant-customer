@@ -161,15 +161,9 @@ prompt_installation
 echo "Running vagrant up"
 vagrant up
 
-# Run vagrant ssh-config and store the output in a variable
+# Run vagrant ssh-config and insert into ~/.ssh/config
 ssh_config_output=$(vagrant ssh-config)
-
-# Add a newline character at the end of ssh_config_output
 ssh_config_output+="\n"
-
-# Add "Host $folder_name" at the beginning of ssh_config_output
 ssh_config_output="Host $folder_name\n$ssh_config_output"
-
-# Append ssh_config_output to ~/.ssh/config
-echo -e "$ssh_config_output" >> ~/.ssh/config
-
+echo -e "$ssh_config_output" >>~/.ssh/config
+sed -i '' '/^Host Default$/d' ~/.ssh/config
