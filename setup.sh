@@ -160,3 +160,16 @@ prompt_installation
 # Run vagrant up and build the machine
 echo "Running vagrant up"
 vagrant up
+
+# Run vagrant ssh-config and store the output in a variable
+ssh_config_output=$(vagrant ssh-config)
+
+# Add a newline character at the end of ssh_config_output
+ssh_config_output+="\n"
+
+# Add "Host $folder_name" at the beginning of ssh_config_output
+ssh_config_output="Host $folder_name\n$ssh_config_output"
+
+# Append ssh_config_output to ~/.ssh/config
+echo -e "$ssh_config_output" >> ~/.ssh/config
+

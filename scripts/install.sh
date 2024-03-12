@@ -1,8 +1,36 @@
 #!/bin/bash
 
-PACKAGE_MANAGER="sudo apt-get"
-UPDATE="${PACKAGE_MANAGER} update"
-INSTALL="${PACKAGE_MANAGER} -y install"
+UPDATE="sudo apt-get update"
+INSTALL="sudo apt-get -y install"
+
+# Define the main function
+main() {
+    install_gh_cli
+    install_aws_cli
+    install_azure_cli
+    install_bicep
+    install_gcloud_cli
+    install_minikube
+    install_kubectl
+    install_helm
+    install_kind
+    install_kustomize
+    install_opa
+    install_terraform
+    install_packer
+    install_ansible
+    install_podman
+    install_colima
+    install_terrascan
+    install_terrahub
+    install_terraform_docs
+    install_trivy
+    install_infracost
+    install_tfswitch
+    install_tflint
+    install_terratag
+    install_shfmt
+}
 
 # GitHub CLI
 install_gh_cli() {
@@ -160,7 +188,6 @@ install_trivy() {
     wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | gpg --dearmor | sudo tee /usr/share/keyrings/trivy.gpg >/dev/null
     echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
     $UPDATE && $INSTALL trivy
-
 }
 
 # Infracost
