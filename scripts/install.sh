@@ -69,15 +69,6 @@ install_gcloud_cli() {
     ${UPDATE} && ${INSTALL} google-cloud-cli
 }
 
-# PowerShell
-install_powershell() {
-    source /etc/os-release
-    wget -q https://packages.microsoft.com/config/debian/$VERSION_ID/packages-microsoft-prod.deb
-    sudo dpkg -i packages-microsoft-prod.deb
-    rm packages-microsoft-prod.deb
-    ${UPDATE} && ${INSTALL} powershell
-}
-
 # Minikube
 install_minikube() {
     curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-arm64 &&
