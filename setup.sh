@@ -21,7 +21,7 @@ if [ ! -d "$local_path" ]; then
 fi
 
 # Create the new folder
-if mkdir "client/$folder_name" && sudo -u mathias mkdir "$local_path/$folder_name"; then
+if mkdir "client/$folder_name" && sudo -u "$USER" mkdir "$local_path/$folder_name"; then
     echo "Folders 'client/$folder_name' and '$local_path/$folder_name' created successfully."
 
     # Copy files into the new folder
