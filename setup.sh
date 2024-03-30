@@ -55,12 +55,23 @@ config.vm.synced_folder \"$local_path/$folder_name\", \"/home/vagrant/code/\", :
 " Vagrantfile >temp_Vagrantfile
 mv temp_Vagrantfile Vagrantfile
 
-# Add client name into the Vagrantfile
-pattern='prl.cpus = 2'
-sed "/$pattern/a\\
-prl.name = \"$folder_name\"
-" Vagrantfile >temp_Vagrantfile
-mv temp_Vagrantfile Vagrantfile
+# Check if the environment is VirtualBox
+if [ "$(VBoxManage --version)" ]; then
+    pattern='config.vm.provider "virtualbox" do |vb|'
+    sed "/$pattern/a\\
+    vb.name = \"$folder_name\"
+    " Vagrantfile > temp_Vagrantfile
+    mv temp_Vagrantfile Vagrantfile
+fi
+
+# Check if the environment is Parallels
+if [ "$(prlctl --version)" ]; then
+    pattern='prl.cpus = 2'
+    sed "/$pattern/a\\
+    prl.name = \"$folder_name\"
+    " Vagrantfile > temp_Vagrantfile
+    mv temp_Vagrantfile Vagrantfile
+fi
 
 # Function to prompt the user for installation choices and echo into install.sh
 prompt_installation() {
