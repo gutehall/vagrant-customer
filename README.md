@@ -1,8 +1,8 @@
 ## Vagrant DevOps Setup
 
-This repository facilitates setting up a development environment for new clients using Vagrant. It avoids cluttering the local machine by provisioning a new box specifically tailored for the client's needs. The base box used is [Debian 12 arm64](https://app.vagrantup.com/gutehall/boxes/debian-12), featuring essential DevOps tools commonly utilized in such scenarios.
+This repository facilitates setting up a development environment for new clients using Vagrant. It avoids cluttering the local machine by provisioning a new box specifically tailored for the client's needs. The base box used is [Debian 12 arm64 or amd64](https://app.vagrantup.com/gutehall/boxes/debian-12), featuring essential DevOps tools commonly utilized in such scenarios.
 
-Tested on macOS Sonoma 14.3, Vagrant 2.4.1, and Parallels Desktop 19.
+Tested on macOS Sonoma using Parallels Desktop 19 and on Ubuntu 23.10 using Virtualbox 7 with Vagrant 2.4.1.
 
 Before executing the script, ensure that `setup.sh` has executable permissions:
 
