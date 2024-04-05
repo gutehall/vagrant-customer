@@ -1,5 +1,27 @@
 #!/bin/bash
 
+USER="sudo -u vagrant"
+
+# Install various utilities
+install_utilities() {
+
+    # Ultimate vimrc
+    $USER git clone --depth=1 https://github.com/amix/vimrc.git /home/vagrant/.vim_runtime
+    $USER sh /home/vagrant/.vim_runtime/install_awesome_vimrc.sh
+
+    # Oh-my-zsh
+    $USER sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+
+    # Plugins
+    $USER git clone https://github.com/zsh-users/zsh-autosuggestions /home/vagrant/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+    $USER git clone https://github.com/zsh-users/zsh-syntax-highlighting.git /home/vagrant/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+    $USER git clone https://github.com/MohamedElashri/exa-zsh /home/vagrant/.oh-my-zsh/custom/plugins/exa-zsh
+
+    # Themes
+    $USER mkdir -p /home/vagrant/.vim/colors/
+    $USER curl -sSL https://github.com/jnurmine/Zenburn/blob/master/colors/zenburn.vim >/home/vagrant/.vim/colors/zenburn.vim
+}
+
 # Prompt the user for the folder name
 echo "Enter the name for the new client: "
 read folder_name
@@ -60,7 +82,7 @@ if [ "$(VBoxManage --version)" ]; then
     pattern='config.vm.provider "virtualbox" do |vb|'
     sed "/$pattern/a\\
     vb.name = \"$folder_name\"
-    " Vagrantfile > temp_Vagrantfile
+    " Vagrantfile >temp_Vagrantfile
     mv temp_Vagrantfile Vagrantfile
 fi
 
@@ -69,7 +91,7 @@ if [ "$(prlctl --version)" ]; then
     pattern='prl.cpus = 2'
     sed "/$pattern/a\\
     prl.name = \"$folder_name\"
-    " Vagrantfile > temp_Vagrantfile
+    " Vagrantfile >temp_Vagrantfile
     mv temp_Vagrantfile Vagrantfile
 fi
 
@@ -165,7 +187,10 @@ $escaped_function_name
     done
 }
 
-# Call the function to prompt the user for installation choices and echo into install.sh
+# Install utilities
+install_utilities
+
+# Installing choices and echo into install.sh
 prompt_installation
 
 # Run vagrant up and build the machine
