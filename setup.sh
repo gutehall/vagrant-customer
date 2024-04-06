@@ -1,25 +1,25 @@
 #!/bin/bash
 
-USER="sudo -u vagrant"
+USR="sudo -u vagrant"
 
 # Install various utilities
 install_utilities() {
 
     # Ultimate vimrc
-    $USER git clone --depth=1 https://github.com/amix/vimrc.git /home/vagrant/.vim_runtime
-    $USER sh /home/vagrant/.vim_runtime/install_awesome_vimrc.sh
+    $USR git clone --depth=1 https://github.com/amix/vimrc.git /home/vagrant/.vim_runtime
+    $USR sh /home/vagrant/.vim_runtime/install_awesome_vimrc.sh
 
     # Oh-my-zsh
-    $USER sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+    $USR sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 
     # Plugins
-    $USER git clone https://github.com/zsh-users/zsh-autosuggestions /home/vagrant/.oh-my-zsh/custom/plugins/zsh-autosuggestions
-    $USER git clone https://github.com/zsh-users/zsh-syntax-highlighting.git /home/vagrant/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
-    $USER git clone https://github.com/MohamedElashri/exa-zsh /home/vagrant/.oh-my-zsh/custom/plugins/exa-zsh
+    $USR git clone https://github.com/zsh-users/zsh-autosuggestions /home/vagrant/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+    $USR git clone https://github.com/zsh-users/zsh-syntax-highlighting.git /home/vagrant/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+    $USR git clone https://github.com/MohamedElashri/exa-zsh /home/vagrant/.oh-my-zsh/custom/plugins/exa-zsh
 
     # Themes
-    $USER mkdir -p /home/vagrant/.vim/colors/
-    $USER curl -sSL https://github.com/jnurmine/Zenburn/blob/master/colors/zenburn.vim >/home/vagrant/.vim/colors/zenburn.vim
+    $USR mkdir -p /home/vagrant/.vim/colors/
+    $USR curl -sSL https://github.com/jnurmine/Zenburn/blob/master/colors/zenburn.vim >/home/vagrant/.vim/colors/zenburn.vim
 }
 
 # Prompt the user for the folder name
@@ -95,8 +95,8 @@ if [ "$(prlctl --version)" ]; then
     mv temp_Vagrantfile Vagrantfile
 fi
 
-# Function to prompt the user for installation choices and echo into install.sh
-prompt_installation() {
+# Prompt the user for installation choices and echo into install.sh
+install_applications() {
     local choices=()
     local choice
 
@@ -187,12 +187,19 @@ $escaped_function_name
     done
 }
 
-# Install utilities
+# Install utilities and choices
 install_utilities
-
-# Installing choices and echo into install.sh
-prompt_installation
+install_applications
 
 # Run vagrant up and build the machine
 echo "Running vagrant up"
 vagrant up
+
+# Run vagrant ssh-config and inserts it into ~/.ssh/config
+vagrant_ssh_config=$(vagrant ssh-config)
+folder_name=$(echo "$vagrant_ssh_config" | grep -oP "HostName \K.*")
+sed -i "s/Host Default/Host $folder_name/" ~/.ssh/config
+
+echo "Successfully updated ~/.ssh/config with Host $folder_name"
+
+rm install.sh
