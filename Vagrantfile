@@ -3,8 +3,7 @@ Vagrant.configure(2) do |config|
     	config.timezone.value = "Europe/Stockholm"
   	end
 	
-	config.vm.box = "gutehall/debian-12"
-	config.vm.box_version = "2024.03.28"
+	config.vm.box = "gutehall/debian12"
 	config.vm.box_check_update = false
 
 	config.vm.provision "shell", inline: "mkdir -p /home/vagrant/code"
@@ -25,5 +24,15 @@ Vagrant.configure(2) do |config|
     config.vm.provider "virtualbox" do |vb|
         vb.memory = 2048
         vb.cpus = 2
+    end
+
+	config.vm.provider "vmware_desktop" do |v|
+        v.memory = 2048
+        v.cpus = 2
+    end
+
+	config.vm.provider "hyperv" do |h|
+        h.memory = 2048
+        h.cpus = 2
     end
 end
