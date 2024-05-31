@@ -95,6 +95,15 @@ if [ "$(prlctl --version)" ]; then
     mv temp_Vagrantfile Vagrantfile
 fi
 
+# Check if the environment is Vmware
+if [ "$(vmrun -v)" ]; then
+    pattern='vm.cpu = 2'
+    sed "/$pattern/a\\
+    vm.name = \"$folder_name\"
+    " Vagrantfile >temp_Vagrantfile
+    mv temp_Vagrantfile Vagrantfile
+fi
+
 # Prompt the user for installation choices and echo into install.sh
 install_applications() {
     local choices=()
@@ -187,7 +196,7 @@ $escaped_function_name
     done
 }
 
-# Install utilities and choices
+# Install utilities and selected applications
 install_utilities
 install_applications
 

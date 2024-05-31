@@ -4,6 +4,8 @@ Vagrant.configure(2) do |config|
   	end
 	
 	config.vm.box = "gutehall/debian12"
+	# config.vm.box = "gutehall/ubuntu24-04"
+  	# config.vm.box_version = "2024.04.27"
 	config.vm.box_check_update = false
 
 	config.vm.provision "shell", inline: "mkdir -p /home/vagrant/code"
@@ -29,10 +31,5 @@ Vagrant.configure(2) do |config|
 	config.vm.provider "vmware_desktop" do |v|
         v.memory = 2048
         v.cpus = 2
-    end
-
-	config.vm.provider "hyperv" do |h|
-        h.memory = 2048
-        h.cpus = 2
     end
 end
