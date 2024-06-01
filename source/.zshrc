@@ -6,7 +6,7 @@ ZSH_THEME="bullet-train"
 
 plugins=(
   git
-  exa-zsh
+  zsh-eza
   docker
   aws
   minikube
