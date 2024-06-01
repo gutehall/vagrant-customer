@@ -42,6 +42,7 @@ The script installs the following tools, depending on your selection:
 * Tfsec
 * Tfswitch
 * Tflint
+* Terratag
 * Infracost
 
 ### Feedback and Contributions
