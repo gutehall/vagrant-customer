@@ -2,7 +2,7 @@
 
 This repository facilitates setting up a development environment for new clients using Vagrant. It avoids cluttering the local machine by provisioning a new box specifically tailored for the client's needs. The base box used is [Debian 12 arm64 or amd64](https://app.vagrantup.com/gutehall/boxes/debian-12), featuring essential DevOps tools commonly utilized in such scenarios. If you prefer to use Ubuntu then just change it in the [Vagrantfile](https://github.com/gutehall/vagrant-customer/blob/main/Vagrantfile). More boxes are available at [Vagrant Cloud](https://app.vagrantup.com/gutehall.)
 
-Tested on macOS Sonoma using Parallels Desktop 19 and Vmware Fusion 13.5 and on Ubuntu 23.10 using Virtualbox 7 with Vagrant 2.4.1.
+Tested on macOS Sonoma using Parallels Desktop 19 with Vagrant 2.4.1. Support for Vmware Fusion 13.5 and Virtualbox 7 will come.
 
 Before executing the script, ensure that `setup.sh` has executable permissions:
 
