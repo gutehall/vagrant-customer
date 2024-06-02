@@ -12,7 +12,7 @@ $script = <<-'SCRIPT'
 	# Plugins
 	${USER} git clone https://github.com/zsh-users/zsh-autosuggestions /home/vagrant/.oh-my-zsh/custom/plugins/zsh-autosuggestions
 	${USER} git clone https://github.com/zsh-users/zsh-syntax-highlighting.git /home/vagrant/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
-	${USER} git clone https://github.com/MohamedElashri/exa-zsh /home/vagrant/.oh-my-zsh/custom/plugins/exa-zsh
+	${USER} git clone https://github.com/renovate-bot/z-shell-_-zsh-eza.git /home/vagrant/.oh-my-zsh/custom/plugins/zsh-eza
 
 	# Themes
 	${USER} mkdir -p /home/vagrant/.vim/colors/
