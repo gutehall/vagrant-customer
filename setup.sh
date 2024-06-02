@@ -49,11 +49,9 @@ fi
 cd "client/$folder_name"
 
 # Add client folder into the Vagrantfile
-# new_line="config.vm.synced_folder \"~/Development/Nordcloud/Clients/$folder_name\", \"/home/vagrant/\", :owner => \"vagrant\""
 pattern='config.vm.box_check_update = false'
-# sed "\|$pattern|a\\
 sed "/$pattern/a\\
-config.vm.synced_folder \"~/Development/Nordcloud/Clients/$folder_name\", \"/home/vagrant/code/\", :owner => \"vagrant\"
+config.vm.synced_folder \"$local_path/$folder_name\", \"/home/vagrant/code/\", :owner => \"vagrant\"
 " Vagrantfile >temp_Vagrantfile
 mv temp_Vagrantfile Vagrantfile
 
@@ -91,17 +89,18 @@ prompt_installation() {
         echo "17. Terrascan"
         echo "18. Terrahub"
         echo "19. Terraform Docs"
-        echo "20. Tfsec"
+        echo "20. Trivy"
         echo "21. Infracost"
         echo "22. Tfswitch"
         echo "23. Tflint"
-        echo "24. Exit"
+        echo "24. Terratag"
+        echo "25. Exit"
 
         read -p "Enter your choices (space-separated): " choices_input
 
         # If "Select All" is chosen, set choices to all available options
         if [[ $choices_input == "0" ]]; then
-            choices=(install_gh_cli install_aws_cli install_azure_cli install_gcloud_cli install_minikube install_kubectl install_helm install_opa install_terraform install_packer install_ansible install_podman install_colima install_terrascan install_terrahub install_terraform_docs install_tfsec install_infracost install_tfswitch install_tflint install_kind install_kustomize)
+            choices=(install_gh_cli install_aws_cli install_azure_cli install_gcloud_cli install_minikube install_kubectl install_helm install_opa install_terraform install_packer install_ansible install_podman install_colima install_terrascan install_terrahub install_terraform_docs install_trivy install_infracost install_tfswitch install_tflint install_terratag install_kind install_kustomize)
         else
             # Split input by spaces and append selected choices to the array
             for choice in $choices_input; do
@@ -125,11 +124,12 @@ prompt_installation() {
                 17) choices+=(install_terrascan) ;;
                 18) choices+=(install_terrahub) ;;
                 19) choices+=(install_terraform_docs) ;;
-                20) choices+=(install_tfsec) ;;
+                20) choices+=(install_trivy) ;;
                 21) choices+=(install_infracost) ;;
                 22) choices+=(install_tfswitch) ;;
-                23) choices+=(install_tflint) ;;
-                24) break 2 ;;
+                23) choices+=(install_terratag) ;;
+                24) choices+=(install_tflint) ;;
+                25) break 2 ;;
                 *) echo "Invalid choice: $choice. Please enter valid numbers from the menu." ;;
                 esac
             done
