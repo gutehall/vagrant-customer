@@ -1,45 +1,43 @@
-Vagrant.configure("2") do |config|
-	# Set timezone if the plugin is available
+$script = <<-'SCRIPT'
+
+	USER="sudo -u vagrant"
+
+	# Ultimate vimrc
+	${USER} git clone --depth=1 https://github.com/amix/vimrc.git /home/vagrant/.vim_runtime
+	${USER} sh /home/vagrant/.vim_runtime/install_awesome_vimrc.sh
+
+	# Oh-my-zsh
+	${USER} sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+
+	# Plugins
+	${USER} git clone https://github.com/zsh-users/zsh-autosuggestions /home/vagrant/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+	${USER} git clone https://github.com/zsh-users/zsh-syntax-highlighting.git /home/vagrant/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+	${USER} git clone https://github.com/MohamedElashri/exa-zsh /home/vagrant/.oh-my-zsh/custom/plugins/exa-zsh
+
+	# Themes
+	${USER} mkdir -p /home/vagrant/.vim/colors/
+	${USER} curl -sSL https://github.com/jnurmine/Zenburn/blob/master/colors/zenburn.vim >/home/vagrant/.vim/colors/zenburn.vim
+
+SCRIPT
+
+Vagrant.configure(2) do |config|
 	if Vagrant.has_plugin?("vagrant-timezone")
-	  config.timezone.value = "Europe/Stockholm"
-	end
-  
-	# Base box configuration
-	config.vm.box = "gutehall/debian12"
-	# config.vm.box = "gutehall/ubuntu24-04"
-  	# config.vm.box_version = "2024.04.27"
+    	config.timezone.value = "Europe/Stockholm"
+  	end
+	config.vm.box = "gutehall/debian-12"
 	config.vm.box_check_update = false
-  
-	# Provisions
-	provision_scripts = [
-	  { inline: "mkdir -p /home/vagrant/code" },
-	  { inline: "sudo chsh -s /bin/zsh vagrant" },
-	  { path: "install.sh" },
-	  { path: "../../scripts/cleanup.sh" }
-	]
-  
-	provision_scripts.each do |script|
-	  config.vm.provision "shell", script
+	config.vm.provision "shell", inline: "mkdir -p /home/vagrant/code"
+	config.vm.provision "shell", inline: $script
+	config.vm.provision "shell", inline: "sudo chsh -s /bin/zsh vagrant"
+	config.vm.provision "shell", path: "install.sh"
+	config.vm.provision "file", source: "../../source/.zshrc", destination: "/home/vagrant/.zshrc"
+	config.vm.provision "file", source: "../../source/.vimrc", destination: "/home/vagrant/.vimrc"
+	config.vm.provision "file", source: "../../source/bullet-train.zsh-theme", destination: "/home/vagrant/.oh-my-zsh/themes/bullet-train.zsh-theme"
+	config.vm.provision "shell", path: "../../scripts/cleanup.sh"
+
+	config.vm.provider "parallels" do |prl|
+		prl.memory = 2048
+		prl.cpus = 2
+		prl.update_guest_tools = true
 	end
-  
-	# File provisions
-	files_to_provision = {
-	  "../../source/.zshrc" => "/home/vagrant/.zshrc",
-	  "../../source/.vimrc" => "/home/vagrant/.vimrc",
-	  "../../source/bullet-train.zsh-theme" => "/home/vagrant/.oh-my-zsh/themes/bullet-train.zsh-theme"
-	}
-  
-	files_to_provision.each do |source, destination|
-	  config.vm.provision "file", source: source, destination: destination
-	end
-  
-	# Provider configurations
-	[ "parallels", "virtualbox", "vmware_desktop" ].each do |provider|
-	  config.vm.provider provider do |p|
-		p.memory = 2048
-		p.cpus = 2
-		p.update_guest_tools = true if provider == "parallels"
-	  end
-	end
-  end
-  
+end
