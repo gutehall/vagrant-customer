@@ -35,7 +35,9 @@ main() {
     install_tfswitch
     install_tflint
     install_terratag
+    install_aws_cdk
     install_shfmt
+    install_serverless
 }
 
 # GitHub CLI
@@ -212,6 +214,11 @@ install_aws_cdk() {
 install_shfmt() {
     curl -sS https://webi.sh/shfmt | sh
     source ~/.config/envman/PATH.env
+    rm -rf Downloads
+}
+
+install_serverless() {
+    sudo /usr/bin/npm install -global serverless
 }
 
 # Setup nameservers

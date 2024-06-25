@@ -94,13 +94,16 @@ prompt_installation() {
         echo "22. Tfswitch"
         echo "23. Tflint"
         echo "24. Terratag"
-        echo "25. Exit"
+        echo "25. AWS CDK"
+        echo "26. Shfmt"
+        echo "27. Serverless"
+        echo "28. Exit"
 
         read -p "Enter your choices (space-separated): " choices_input
 
         # If "Select All" is chosen, set choices to all available options
         if [[ $choices_input == "0" ]]; then
-            choices=(install_gh_cli install_aws_cli install_azure_cli install_gcloud_cli install_minikube install_kubectl install_helm install_opa install_terraform install_packer install_ansible install_podman install_colima install_terrascan install_terrahub install_terraform_docs install_trivy install_infracost install_tfswitch install_tflint install_terratag install_kind install_kustomize)
+            choices=(install_gh_cli install_aws_cli install_azure_cli install_gcloud_cli install_minikube install_kubectl install_helm install_opa install_terraform install_packer install_ansible install_podman install_colima install_terrascan install_terrahub install_terraform_docs install_trivy install_infracost install_tfswitch install_tflint install_terratag install_kind install_kustomize install_aws_cdk install_shfmt install_serverless)
         else
             # Split input by spaces and append selected choices to the array
             for choice in $choices_input; do
@@ -129,7 +132,10 @@ prompt_installation() {
                 22) choices+=(install_tfswitch) ;;
                 23) choices+=(install_terratag) ;;
                 24) choices+=(install_tflint) ;;
-                25) break 2 ;;
+                25) choices+=(install_aws_cdk) ;;
+                26) choices+=(install_shfmt) ;;
+                27) choices+=(install_serverless) ;;
+                28) break 2 ;;
                 *) echo "Invalid choice: $choice. Please enter valid numbers from the menu." ;;
                 esac
             done
@@ -156,6 +162,9 @@ $escaped_function_name
 
 # Call the function to prompt the user for installation choices and echo into install.sh
 prompt_installation
+
+# Set correct permissions
+sudo chown -R vagrant: /usr/local/lib/node_modules
 
 # Run vagrant up and build the machine
 echo "Running vagrant up"
