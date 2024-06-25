@@ -3,6 +3,12 @@
 UPDATE="sudo apt-get update"
 INSTALL="sudo apt-get -y install"
 
+# Setup nameservers
+setup_nameservers() {
+    echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf >/dev/null
+    echo "nameserver 8.8.4.4" | sudo tee -a /etc/resolv.conf >/dev/null
+}
+
 # Define the main function
 main() {
     install_gh_cli
@@ -57,9 +63,7 @@ install_azure_cli() {
 
 # Bicep
 install_bicep() {
-    curl -Lo bicep https://github.com/Azure/bicep/releases/latest/download/bicep-linux-x64
-    chmod +x ./bicep
-    sudo mv ./bicep /usr/local/bin/bicep
+    /usr/bin/az bicep install
 }
 
 # Gcloud CLI
@@ -100,11 +104,13 @@ install_kind() {
 # Kustomize
 install_kustomize() {
     curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
+    sudo install -o root -g root -m 0755 kustomize /usr/local/bin/kustomize
+    rm -rf kustomize
 }
 
 # Open Policy Agent
 install_opa() {
-    curl -L -o opa https://openpolicyagent.org/downloads/v0.60.0/opa_linux_amd64_static &&
+    curl -L -o opa https://openpolicyagent.org/downloads/v0.60.0/opa_linux_arm64_static &&
         sudo install -m 0755 opa /usr/local/bin/opa
     rm opa
 }
@@ -146,14 +152,15 @@ install_colima() {
 
 # Terrascan
 install_terrascan() {
-    curl -L "$(curl -s https://api.github.com/repos/tenable/terrascan/releases/latest | grep -o -E "https://.+?_Linux_x86_64.tar.gz")" >terrascan.tar.gz
+    curl -L "$(curl -s https://api.github.com/repos/tenable/terrascan/releases/latest | grep -o -E "https://.+?_Linux_arm64.tar.gz")" >terrascan.tar.gz
     tar -xf terrascan.tar.gz terrascan && rm terrascan.tar.gz
-    install terrascan /usr/local/bin && rm terrascan
+    sudo install terrascan /usr/local/bin && rm terrascan
 }
 
 # Terrahub
 install_terrahub() {
-    npm install --global terrahub
+    $UPDATE && $INSTALL npm
+    sudo /usr/bin/npm install --global terrahub
 }
 
 # Terraform Docs
@@ -198,8 +205,7 @@ install_tflint() {
 
 # AWS CDK
 install_aws_cdk() {
-    $UPDATE && $INSTALL npm
-    npm install -g aws-cdk
+    sudo /usr/bin/npm install -global aws-cdk
 }
 
 # shfmt
@@ -207,6 +213,9 @@ install_shfmt() {
     curl -sS https://webi.sh/shfmt | sh
     source ~/.config/envman/PATH.env
 }
+
+# Setup nameservers
+setup_nameservers
 
 # Run the script
 main
