@@ -2,11 +2,17 @@
 
 UPDATE="sudo apt-get update"
 INSTALL="sudo apt-get -y install"
+UPGRADE="sudo apt-get -y upgrade"
 
 # Setup nameservers
 setup_nameservers() {
     echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf >/dev/null
     echo "nameserver 8.8.4.4" | sudo tee -a /etc/resolv.conf >/dev/null
+}
+
+# Update system
+update_system() {
+    ${UPDATE} && ${UPGRADE}
 }
 
 # Define the main function
@@ -223,6 +229,9 @@ install_serverless() {
 
 # Setup nameservers
 setup_nameservers
+
+# Update system
+update_system
 
 # Run the script
 main
