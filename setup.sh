@@ -84,7 +84,7 @@ prompt_installation() {
         echo "12. Terraform"
         echo "13. Packer"
         echo "14. Ansible"
-        echo "15. Podman & Podman Compose"
+        echo "15. Docker"
         echo "16. Colima"
         echo "17. Terrascan"
         echo "18. Terrahub"
@@ -103,7 +103,7 @@ prompt_installation() {
 
         # If "Select All" is chosen, set choices to all available options
         if [[ $choices_input == "0" ]]; then
-            choices=(install_gh_cli install_aws_cli install_azure_cli install_gcloud_cli install_minikube install_kubectl install_helm install_opa install_terraform install_packer install_ansible install_podman install_colima install_terrascan install_terrahub install_terraform_docs install_trivy install_infracost install_tfswitch install_tflint install_terratag install_kind install_kustomize install_aws_cdk install_shfmt install_serverless)
+            choices=(install_gh_cli install_aws_cli install_azure_cli install_gcloud_cli install_minikube install_kubectl install_helm install_opa install_terraform install_packer install_ansible install_docker install_colima install_terrascan install_terrahub install_terraform_docs install_trivy install_infracost install_tfswitch install_tflint install_terratag install_kind install_kustomize install_aws_cdk install_shfmt install_serverless)
         else
             # Split input by spaces and append selected choices to the array
             for choice in $choices_input; do
@@ -122,7 +122,7 @@ prompt_installation() {
                 12) choices+=(install_terraform) ;;
                 13) choices+=(install_packer) ;;
                 14) choices+=(install_ansible) ;;
-                15) choices+=(install_podman) ;;
+                15) choices+=(install_docker) ;;
                 16) choices+=(install_colima) ;;
                 17) choices+=(install_terrascan) ;;
                 18) choices+=(install_terrahub) ;;

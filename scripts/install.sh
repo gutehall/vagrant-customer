@@ -31,8 +31,9 @@ main() {
     install_terraform
     install_packer
     install_ansible
-    install_podman
+    # install_podman
     install_colima
+    install_docker
     install_terrascan
     install_terrahub
     install_terraform_docs
@@ -71,7 +72,7 @@ install_azure_cli() {
 
 # Bicep
 install_bicep() {
-    /usr/bin/az bicep install
+    $USER /usr/bin/az bicep install
 }
 
 # Gcloud CLI
@@ -147,15 +148,28 @@ install_ansible() {
 }
 
 # Podman & Podman Compose
-install_podman() {
-    $UPDATE && $INSTALL podman
-    pip3 install podman-compose
-}
+# install_podman() {
+#     $UPDATE && $INSTALL podman
+#     pip3 install podman-compose
+# }
 
 # Colima
 install_colima() {
     curl -LO https://github.com/abiosoft/colima/releases/download/v0.6.0/colima-$(uname)-$(uname -m)
     install colima-$(uname)-$(uname -m) /usr/local/bin/colima
+}
+
+# Docker
+install_docker() {
+    sudo install -m 0755 -d /etc/apt/keyrings
+    sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
+    sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+    echo \
+        "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" |
+        sudo tee /etc/apt/sources.list.d/docker.list >/dev/null
+    $UPDATE && $INSTALL docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 }
 
 # Terrascan
