@@ -39,6 +39,25 @@ Vagrant.configure(2) do |config|
 	config.vm.provider "parallels" do |prl|
 		prl.memory = 2048
 		prl.cpus = 2
+		prl.name = "devbox"
 		prl.update_guest_tools = true
+	end
+
+	config.vm.provider "virtualbox" do |vb|
+        vb.memory = 2048
+        vb.cpus = 2
+		vb.name = "devbox"
+    end
+
+	config.vm.provider "vmware_desktop" do |v|
+        v.memory = 2048
+        v.cpus = 2
+		v.name = "devbox"
+    end
+
+	config.vm.provider "hyperv" do |h|
+        h.memory = 2048
+        h.cpus = 2
+		h.name = "devbox"
 	end
 end

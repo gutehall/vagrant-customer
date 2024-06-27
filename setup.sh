@@ -55,13 +55,6 @@ config.vm.synced_folder \"$local_path/$folder_name\", \"/home/vagrant/code/\", :
 " Vagrantfile >temp_Vagrantfile
 mv temp_Vagrantfile Vagrantfile
 
-# Add client name into the Vagrantfile
-pattern='prl.cpus = 2'
-sed "/$pattern/a\\
-prl.name = \"$folder_name\"
-" Vagrantfile >temp_Vagrantfile
-mv temp_Vagrantfile Vagrantfile
-
 # Function to prompt the user for installation choices and echo into install.sh
 prompt_installation() {
     local choices=()
@@ -84,7 +77,7 @@ prompt_installation() {
         echo "12. Terraform"
         echo "13. Packer"
         echo "14. Ansible"
-        echo "15. Docker"
+        echo "15. Docker & Docker Compose"
         echo "16. Colima"
         echo "17. Terrascan"
         echo "18. Terrahub"
@@ -97,13 +90,14 @@ prompt_installation() {
         echo "25. AWS CDK"
         echo "26. Shfmt"
         echo "27. Serverless"
-        echo "28. Exit"
+        echo "28. Podman & Podman Compose"
+        echo "29. Exit"
 
         read -p "Enter your choices (space-separated): " choices_input
 
         # If "Select All" is chosen, set choices to all available options
         if [[ $choices_input == "0" ]]; then
-            choices=(install_gh_cli install_aws_cli install_azure_cli install_gcloud_cli install_minikube install_kubectl install_helm install_opa install_terraform install_packer install_ansible install_docker install_colima install_terrascan install_terrahub install_terraform_docs install_trivy install_infracost install_tfswitch install_tflint install_terratag install_kind install_kustomize install_aws_cdk install_shfmt install_serverless)
+            choices=(install_gh_cli install_aws_cli install_azure_cli install_gcloud_cli install_minikube install_kubectl install_helm install_opa install_terraform install_packer install_ansible install_docker install_colima install_terrascan install_terrahub install_terraform_docs install_trivy install_infracost install_tfswitch install_tflint install_terratag install_kind install_kustomize install_aws_cdk install_shfmt install_serverless install_podman)
         else
             # Split input by spaces and append selected choices to the array
             for choice in $choices_input; do
@@ -135,7 +129,8 @@ prompt_installation() {
                 25) choices+=(install_aws_cdk) ;;
                 26) choices+=(install_shfmt) ;;
                 27) choices+=(install_serverless) ;;
-                28) break 2 ;;
+                28) choices+=(install_podman) ;;
+                29) break 2 ;;
                 *) echo "Invalid choice: $choice. Please enter valid numbers from the menu." ;;
                 esac
             done

@@ -31,7 +31,7 @@ main() {
     install_terraform
     install_packer
     install_ansible
-    # install_podman
+    install_podman
     install_colima
     install_docker
     install_terrascan
@@ -148,10 +148,9 @@ install_ansible() {
 }
 
 # Podman & Podman Compose
-# install_podman() {
-#     $UPDATE && $INSTALL podman
-#     pip3 install podman-compose
-# }
+install_podman() {
+    $UPDATE && $INSTALL podman podman-compose
+}
 
 # Colima
 install_colima() {
@@ -159,7 +158,7 @@ install_colima() {
     install colima-$(uname)-$(uname -m) /usr/local/bin/colima
 }
 
-# Docker
+# Docker & Docker Compose
 install_docker() {
     sudo install -m 0755 -d /etc/apt/keyrings
     sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
@@ -170,6 +169,9 @@ install_docker() {
   $(. /etc/os-release && echo "$VERSION_CODENAME") stable" |
         sudo tee /etc/apt/sources.list.d/docker.list >/dev/null
     $UPDATE && $INSTALL docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+    sudo curl -L "https://github.com/docker/compose/releases/download/v2.28.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose &&
+        chmod +x /usr/local/bin/docker-compose
 }
 
 # Terrascan
