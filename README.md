@@ -35,6 +35,8 @@ The script installs the following tools, depending on your selection:
 * Ansible
 * Podman
 * Podman Compose
+* Docker
+* Docker Compose
 * Colima
 * Terrascan
 * Terrahub
@@ -44,6 +46,9 @@ The script installs the following tools, depending on your selection:
 * Tflint
 * Terratag
 * Infracost
+* Serverless
+* AWS CDK
+* Shfmt
 
 ### Feedback and Contributions
 Your feedback and contributions to enhance this setup are greatly appreciated. Feel free to suggest improvements or additions.
