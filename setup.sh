@@ -164,3 +164,6 @@ sudo chown -R vagrant: /usr/local/lib/node_modules
 # Run vagrant up and build the machine
 echo "Running vagrant up"
 vagrant up
+
+echo "Running vagrant ssh-config"
+vagrant ssh-config
