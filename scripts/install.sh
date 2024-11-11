@@ -6,8 +6,7 @@ UPGRADE="sudo apt-get -y upgrade"
 
 # Setup nameservers
 setup_nameservers() {
-    echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf >/dev/null
-    echo "nameserver 8.8.4.4" | sudo tee -a /etc/resolv.conf >/dev/null
+    echo -e "nameserver 8.8.8.8\nnameserver 8.8.4.4" | sudo tee /etc/resolv.conf >/dev/null
 }
 
 # Update system
@@ -17,42 +16,25 @@ update_system() {
 
 # Define the main function
 main() {
-    install_gh_cli
-    install_aws_cli
-    install_azure_cli
-    install_bicep
-    install_gcloud_cli
-    install_minikube
-    install_kubectl
-    install_helm
-    install_kind
-    install_kustomize
-    install_opa
-    install_terraform
-    install_packer
-    install_ansible
-    install_podman
-    install_colima
-    install_docker
-    install_terrascan
-    install_terrahub
-    install_terraform_docs
-    install_trivy
-    install_infracost
-    install_tfswitch
-    install_tflint
-    install_terratag
-    install_aws_cdk
-    install_shfmt
-    install_serverless
+    local installers=(
+        install_gh_cli install_aws_cli install_azure_cli install_bicep install_gcloud_cli
+        install_minikube install_kubectl install_helm install_kind install_kustomize
+        install_opa install_terraform install_packer install_ansible install_podman
+        install_colima install_docker install_terrascan install_terrahub install_terraform_docs
+        install_trivy install_infracost install_tfswitch install_tflint install_terratag
+        install_aws_cdk install_shfmt install_serverless
+    )
+    for installer in "${installers[@]}"; do
+        $installer
+    done
 }
 
 # GitHub CLI
 install_gh_cli() {
     curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg &&
-        sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg &&
-        echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list >/dev/null &&
-        ${UPDATE} && ${INSTALL} gh
+    sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg &&
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list >/dev/null &&
+    ${UPDATE} && ${INSTALL} gh
 }
 
 # AWS CLI v2
@@ -72,7 +54,7 @@ install_azure_cli() {
 
 # Bicep
 install_bicep() {
-    $USER /usr/bin/az bicep install
+    az bicep install
 }
 
 # Gcloud CLI
@@ -85,14 +67,14 @@ install_gcloud_cli() {
 # Minikube
 install_minikube() {
     curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-arm64 &&
-        sudo install minikube-linux-arm64 /usr/local/bin/minikube
+    sudo install minikube-linux-arm64 /usr/local/bin/minikube
     rm minikube-linux-arm64
 }
 
 # Kubectl
 install_kubectl() {
     curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/arm64/kubectl" &&
-        sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+    sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
     rm kubectl
 }
 
@@ -120,42 +102,37 @@ install_kustomize() {
 # Open Policy Agent
 install_opa() {
     curl -L -o opa https://openpolicyagent.org/downloads/v0.60.0/opa_linux_arm64_static &&
-        sudo install -m 0755 opa /usr/local/bin/opa
+    sudo install -m 0755 opa /usr/local/bin/opa
     rm opa
 }
 
 # Terraform
 install_terraform() {
-    wget -O- https://apt.releases.hashicorp.com/gpg |
-        gpg --dearmor |
-        tee /usr/share/keyrings/hashicorp-archive-keyring.gpg
-
-    echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] \
-    https://apt.releases.hashicorp.com $(lsb_release -cs) main" |
-        tee /etc/apt/sources.list.d/hashicorp.list &&
-        $UPDATE && $INSTALL terraform
+    wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor | tee /usr/share/keyrings/hashicorp-archive-keyring.gpg
+    echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list
+    ${UPDATE} && ${INSTALL} terraform
 }
 
 # Packer
 install_packer() {
-    $UPDATE && $INSTALL packer
+    ${UPDATE} && ${INSTALL} packer
 }
 
 # Ansible
 install_ansible() {
-    add-apt-repository --yes --update ppa:ansible/ansible
-    $UPDATE && $INSTALL ansible
+    sudo add-apt-repository --yes --update ppa:ansible/ansible
+    ${UPDATE} && ${INSTALL} ansible
 }
 
 # Podman & Podman Compose
 install_podman() {
-    $UPDATE && $INSTALL podman podman-compose
+    ${UPDATE} && ${INSTALL} podman podman-compose
 }
 
 # Colima
 install_colima() {
     curl -LO https://github.com/abiosoft/colima/releases/download/v0.6.0/colima-$(uname)-$(uname -m)
-    install colima-$(uname)-$(uname -m) /usr/local/bin/colima
+    sudo install colima-$(uname)-$(uname -m) /usr/local/bin/colima
 }
 
 # Docker & Docker Compose
@@ -163,15 +140,10 @@ install_docker() {
     sudo install -m 0755 -d /etc/apt/keyrings
     sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
     sudo chmod a+r /etc/apt/keyrings/docker.asc
-
-    echo \
-        "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
-  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" |
-        sudo tee /etc/apt/sources.list.d/docker.list >/dev/null
-    $UPDATE && $INSTALL docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-
-    sudo curl -L "https://github.com/docker/compose/releases/download/v2.28.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose &&
-        chmod +x /usr/local/bin/docker-compose
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | sudo tee /etc/apt/sources.list.d/docker.list >/dev/null
+    ${UPDATE} && ${INSTALL} docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+    sudo curl -L "https://github.com/docker/compose/releases/download/v2.28.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    sudo chmod +x /usr/local/bin/docker-compose
 }
 
 # Terrascan
@@ -183,16 +155,15 @@ install_terrascan() {
 
 # Terrahub
 install_terrahub() {
-    $UPDATE && $INSTALL npm
-    sudo /usr/bin/npm install --global terrahub
+    ${UPDATE} && ${INSTALL} npm
+    sudo npm install --global terrahub
 }
 
 # Terraform Docs
 install_terraform_docs() {
     curl -Lo ./terraform-docs.tar.gz https://github.com/terraform-docs/terraform-docs/releases/download/v0.17.0/terraform-docs-v0.17.0-linux-arm64.tar.gz
     tar -xzf terraform-docs.tar.gz && rm terraform-docs.tar.gz
-    chmod +x terraform-docs
-    mv terraform-docs /usr/local/bin/terraform-docs
+    sudo install terraform-docs /usr/local/bin/terraform-docs
     rm LICENSE README.md
 }
 
@@ -200,16 +171,15 @@ install_terraform_docs() {
 install_terratag() {
     curl -Lo ./terratag.tar.gz https://github.com/env0/terratag/releases/download/v0.3.1/terratag_0.3.1_linux_arm64.tar.gz
     tar -xzf terratag.tar.gz && rm terratag.tar.gz
-    chmod +x terratag
-    mv terratag /usr/local/bin/terratag
+    sudo install terratag /usr/local/bin/terratag
     rm LICENSE README.md
 }
 
-# Tfsec
+# Trivy
 install_trivy() {
     wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | gpg --dearmor | sudo tee /usr/share/keyrings/trivy.gpg >/dev/null
     echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
-    $UPDATE && $INSTALL trivy
+    ${UPDATE} && ${INSTALL} trivy
 }
 
 # Infracost
@@ -229,7 +199,7 @@ install_tflint() {
 
 # AWS CDK
 install_aws_cdk() {
-    sudo /usr/bin/npm install -global aws-cdk
+    sudo npm install -global aws-cdk
 }
 
 # shfmt
@@ -239,8 +209,9 @@ install_shfmt() {
     rm -rf Downloads
 }
 
+# Serverless
 install_serverless() {
-    sudo /usr/bin/npm install -global serverless
+    sudo npm install -global serverless
 }
 
 # Setup nameservers

@@ -1,138 +1,86 @@
 #!/bin/bash
 
-# Prompt the user for the folder name
-echo "Enter the name for the new client: "
-read folder_name
-
-# Validate folder name - check if it contains only alphanumeric characters
-if [[ ! "$folder_name" =~ ^[[:alnum:]]+$ ]]; then
-    echo "Error: Folder name can only contain letters and numbers."
-    exit 1
-fi
-
-# Create the client folder locally
-echo "Enter the path where you want to sync locally: "
-read local_path
-
-# Validate local path - check if it exists
-if [ ! -d "$local_path" ]; then
-    echo "Error: The specified path does not exist."
-    exit 1
-fi
-
-# Create the new folder
-if mkdir "client/$folder_name" && sudo -u mathias mkdir "$local_path/$folder_name"; then
-    echo "Folders 'client/$folder_name' and '$local_path/$folder_name' created successfully."
-
-    # Copy files into the new folder
-    source_files=("Vagrantfile" "scripts/install.sh")
-
-    for file in "${source_files[@]}"; do
-        if [ -e "$file" ]; then
-            if [ "$file" == "scripts/install.sh" ]; then
-                cp "$file" "client/$folder_name/install.sh"
-                echo "File 'install.sh' copied successfully."
-            else
-                cp "$file" "client/$folder_name/$file"
-                echo "File '$file' copied successfully."
-            fi
+# Function to prompt for input and validate folder name
+prompt_folder_name() {
+    while true; do
+        read -p "Enter the name for the new client: " folder_name
+        if [[ "$folder_name" =~ ^[[:alnum:]]+$ ]]; then
+            break
         else
-            echo "Error: File '$file' does not exist. Skipping..."
+            echo "Error: Folder name can only contain letters and numbers."
         fi
     done
-else
-    echo "Error: Failed to create folders."
-    exit 1
-fi
+}
 
-# Move to the new folder
-cd "client/$folder_name"
+# Function to prompt for input and validate local path
+prompt_local_path() {
+    while true; do
+        read -p "Enter the path where you want to sync locally: " local_path
+        if [ -d "$local_path" ]; then
+            break
+        else
+            echo "Error: The specified path does not exist."
+        fi
+    done
+}
 
-# Add client folder into the Vagrantfile
-pattern='config.vm.box_check_update = false'
-sed "/$pattern/a\\
+# Function to create folders and copy files
+create_and_copy_files() {
+    if mkdir -p "client/$folder_name" && sudo -u mathias mkdir -p "$local_path/$folder_name"; then
+        echo "Folders 'client/$folder_name' and '$local_path/$folder_name' created successfully."
+        for file in "Vagrantfile" "scripts/install.sh"; do
+            if [ -e "$file" ]; then
+                cp "$file" "client/$folder_name/$(basename "$file")"
+                echo "File '$(basename "$file")' copied successfully."
+            else
+                echo "Error: File '$file' does not exist. Skipping..."
+            fi
+        done
+    else
+        echo "Error: Failed to create folders."
+        exit 1
+    fi
+}
+
+# Function to update Vagrantfile
+update_vagrantfile() {
+    local pattern='config.vm.box_check_update = false'
+    sed "/$pattern/a\\
 config.vm.synced_folder \"$local_path/$folder_name\", \"/home/vagrant/code/\", :owner => \"vagrant\"
-" Vagrantfile >temp_Vagrantfile
-mv temp_Vagrantfile Vagrantfile
+" Vagrantfile >temp_Vagrantfile && mv temp_Vagrantfile Vagrantfile
+}
 
-# Function to prompt the user for installation choices and echo into install.sh
+# Function to prompt for installation choices
 prompt_installation() {
     local choices=()
     local choice
+    local options=(
+        "GitHub CLI" "AWS CLI v2" "Azure CLI" "Bicep" "Gcloud CLI" "Minikube" "Kubectl" "Helm" "Kind" "Kustomize"
+        "Open Policy Agent" "Terraform" "Packer" "Ansible" "Docker & Docker Compose" "Colima" "Terrascan" "Terrahub"
+        "Terraform Docs" "Trivy" "Infracost" "Tfswitch" "Tflint" "Terratag" "AWS CDK" "Shfmt" "Serverless" "Podman & Podman Compose"
+    )
 
     while true; do
         echo "Which applications would you like to install? (Enter the numbers separated by spaces)"
         echo "0. Select All"
-        echo "1. GitHub CLI"
-        echo "2. AWS CLI v2"
-        echo "3. Azure CLI"
-        echo "4. Bicep"
-        echo "5. Gcloud CLI"
-        echo "6. Minikube"
-        echo "7. Kubectl"
-        echo "8. Helm"
-        echo "9. Kind"
-        echo "10. Kustomize"
-        echo "11. Open Policy Agent"
-        echo "12. Terraform"
-        echo "13. Packer"
-        echo "14. Ansible"
-        echo "15. Docker & Docker Compose"
-        echo "16. Colima"
-        echo "17. Terrascan"
-        echo "18. Terrahub"
-        echo "19. Terraform Docs"
-        echo "20. Trivy"
-        echo "21. Infracost"
-        echo "22. Tfswitch"
-        echo "23. Tflint"
-        echo "24. Terratag"
-        echo "25. AWS CDK"
-        echo "26. Shfmt"
-        echo "27. Serverless"
-        echo "28. Podman & Podman Compose"
+        for i in "${!options[@]}"; do
+            echo "$((i + 1)). ${options[$i]}"
+        done
         echo "29. Exit"
 
         read -p "Enter your choices (space-separated): " choices_input
 
-        # If "Select All" is chosen, set choices to all available options
         if [[ $choices_input == "0" ]]; then
-            choices=(install_gh_cli install_aws_cli install_azure_cli install_gcloud_cli install_minikube install_kubectl install_helm install_opa install_terraform install_packer install_ansible install_docker install_colima install_terrascan install_terrahub install_terraform_docs install_trivy install_infracost install_tfswitch install_tflint install_terratag install_kind install_kustomize install_aws_cdk install_shfmt install_serverless install_podman)
+            choices=("${options[@]}")
         else
-            # Split input by spaces and append selected choices to the array
             for choice in $choices_input; do
-                case $choice in
-                1) choices+=(install_gh_cli) ;;
-                2) choices+=(install_aws_cli) ;;
-                3) choices+=(install_azure_cli) ;;
-                4) choices+=(install_bicep) ;;
-                5) choices+=(install_gcloud_cli) ;;
-                6) choices+=(install_minikube) ;;
-                7) choices+=(install_kubectl) ;;
-                8) choices+=(install_helm) ;;
-                9) choices+=(install_kind) ;;
-                10) choices+=(install_kustomize) ;;
-                11) choices+=(install_opa) ;;
-                12) choices+=(install_terraform) ;;
-                13) choices+=(install_packer) ;;
-                14) choices+=(install_ansible) ;;
-                15) choices+=(install_docker) ;;
-                16) choices+=(install_colima) ;;
-                17) choices+=(install_terrascan) ;;
-                18) choices+=(install_terrahub) ;;
-                19) choices+=(install_terraform_docs) ;;
-                20) choices+=(install_trivy) ;;
-                21) choices+=(install_infracost) ;;
-                22) choices+=(install_tfswitch) ;;
-                23) choices+=(install_terratag) ;;
-                24) choices+=(install_tflint) ;;
-                25) choices+=(install_aws_cdk) ;;
-                26) choices+=(install_shfmt) ;;
-                27) choices+=(install_serverless) ;;
-                28) choices+=(install_podman) ;;
-                29) break 2 ;;
-                *) echo "Invalid choice: $choice. Please enter valid numbers from the menu." ;;
-                esac
+                if ((choice >= 1 && choice <= ${#options[@]})); then
+                    choices+=("${options[$((choice - 1))]}")
+                elif [[ $choice == "29" ]]; then
+                    break 2
+                else
+                    echo "Invalid choice: $choice. Please enter valid numbers from the menu."
+                fi
             done
         fi
 
@@ -142,20 +90,18 @@ prompt_installation() {
         fi
     done
 
-    # Define the path to the install.sh file in the client folder
-    install_script="install.sh"
-
-    # Insert the choices before the main function in the install.sh file
-    for function_name in "${choices[@]}"; do
-        escaped_function_name=$(echo "$function_name" | sed 's/[\/&]/\\&/g')
-        temp_file=$(mktemp)
-        sed "/^main\$/a\\
-$escaped_function_name
-" "$install_script" >"$temp_file" && mv "$temp_file" "$install_script"
+    local install_script="client/$folder_name/install.sh"
+    for choice in "${choices[@]}"; do
+        echo "install_${choice// /_}" >> "$install_script"
     done
 }
 
-# Call the function to prompt the user for installation choices and echo into install.sh
+# Main script execution
+prompt_folder_name
+prompt_local_path
+create_and_copy_files
+cd "client/$folder_name" || exit
+update_vagrantfile
 prompt_installation
 
 # Set correct permissions

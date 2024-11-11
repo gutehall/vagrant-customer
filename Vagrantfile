@@ -3,20 +3,20 @@ $script = <<-'SCRIPT'
 	USER="sudo -u vagrant"
 
 	# Ultimate vimrc
-	${USER} git clone --depth=1 https://github.com/amix/vimrc.git /home/vagrant/.vim_runtime
-	${USER} sh /home/vagrant/.vim_runtime/install_awesome_vimrc.sh
+    $USER git clone --depth=1 https://github.com/amix/vimrc.git /home/vagrant/.vim_runtime
+    $USER sh /home/vagrant/.vim_runtime/install_awesome_vimrc.sh
 
-	# Oh-my-zsh
-	${USER} sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+    # Oh-my-zsh
+    $USER sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 
-	# Plugins
-	${USER} git clone https://github.com/zsh-users/zsh-autosuggestions /home/vagrant/.oh-my-zsh/custom/plugins/zsh-autosuggestions
-	${USER} git clone https://github.com/zsh-users/zsh-syntax-highlighting.git /home/vagrant/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
-	${USER} git clone https://github.com/renovate-bot/z-shell-_-zsh-eza.git /home/vagrant/.oh-my-zsh/custom/plugins/zsh-eza
+    # Plugins
+    $USER git clone https://github.com/zsh-users/zsh-autosuggestions /home/vagrant/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+    $USER git clone https://github.com/zsh-users/zsh-syntax-highlighting.git /home/vagrant/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+    $USER git clone https://github.com/z-shell/zsh-eza.git /home/vagrant/.oh-my-zsh/custom/plugins/zsh-eza
 
-	# Themes
-	${USER} mkdir -p /home/vagrant/.vim/colors/
-	${USER} curl -sSL https://github.com/jnurmine/Zenburn/blob/master/colors/zenburn.vim >/home/vagrant/.vim/colors/zenburn.vim
+    # Themes
+    $USER mkdir -p /home/vagrant/.vim/colors/
+    $USER curl -sSL https://github.com/jnurmine/Zenburn/blob/master/colors/zenburn.vim >/home/vagrant/.vim/colors/zenburn.vim
 
 SCRIPT
 
