@@ -7,7 +7,7 @@ A comprehensive, optimized Vagrant-based DevOps environment setup tool that crea
 ### Core Features
 - **Isolated Client Environments**: Each client gets their own isolated VM environment
 - **Multi-Provider Support**: Works with Parallels, VirtualBox, VMware, and Hyper-V
-- **Comprehensive DevOps Toolset**: 61+ tools across 12 categories
+- **Comprehensive DevOps Toolset**: 60+ tools across 12 categories
 - **Automated Setup**: One-command setup with interactive tool selection
 - **File Synchronization**: Automatic sync between local and VM directories
 
@@ -15,7 +15,7 @@ A comprehensive, optimized Vagrant-based DevOps environment setup tool that crea
 - **Cloud CLIs** (5 tools) - AWS, Azure, GCP, GitHub
 - **Kubernetes** (5 tools) - Minikube, Kubectl, Helm, Kind, Kustomize
 - **Infrastructure** (4 tools) - Terraform, Packer, Ansible, OPA
-- **Containers** (4 tools) - Docker, Podman, Colima, Apple Containerization
+- **Containers** (3 tools) - Docker, Podman, Colima
 - **Security** (3 tools) - Terrascan, Trivy, Tfsec
 - **Terraform Ecosystem** (5 tools) - Docs, Tfswitch, Tflint, Terratag, Infracost
 - **Development** (4 tools) - AWS CDK, Shfmt, Serverless, Terrahub
@@ -180,7 +180,7 @@ The `manage.sh` script provides comprehensive environment management:
 - **Docker & Docker Compose** - Container platform
 - **Podman & Podman Compose** - Container engine
 - **Colima** - Container runtime for macOS
-- **Apple Containerization** - Native Linux containers on Apple Silicon
+
 
 ### Security Tools
 - **Terrascan** - Security scanner for IaC
@@ -294,12 +294,18 @@ tools:
 
 ### Modifying VM Configuration
 
-Edit the `config.yaml` file to modify:
+Edit the `config/config.yaml` file to modify:
 - VM resources (memory, CPU)
 - Base box
 - Provider-specific settings
 - Timezone
 - Network configuration
+
+### Configuration Benefits
+- **Single Source of Truth**: All settings in one place
+- **No Duplication**: Eliminates redundant configuration variables
+- **Easy Maintenance**: Change settings once, applies everywhere
+- **Version Control**: Track configuration changes separately
 
 ## 🐛 Troubleshooting
 
@@ -313,23 +319,23 @@ Edit the `config.yaml` file to modify:
 
 2. **Permission denied**:
    ```bash
-   chmod +x setup.sh manage.sh
+   chmod +x scripts/core/setup.sh scripts/core/manage.sh
    ```
 
 3. **VM fails to start**:
    ```bash
    # Check provider status
-   ./manage.sh status <client_name>
+   make status CLIENT=<client_name>
    
    # View logs
-   ./manage.sh logs <client_name>
+   ./scripts/core/manage.sh logs <client_name>
    ```
 
 4. **Tool installation fails**:
    ```bash
    # Clean up and retry
-   ./manage.sh cleanup <client_name>
-   ./manage.sh start <client_name>
+   ./scripts/core/manage.sh cleanup <client_name>
+   make start CLIENT=<client_name>
    ```
 
 ### Log Files
@@ -348,22 +354,22 @@ Edit the `config.yaml` file to modify:
 git pull origin main
 
 # Validate configuration
-./manage.sh validate
+make validate
 
 # Update existing environments (if needed)
-./manage.sh update
+./scripts/core/manage.sh update
 ```
 
 ### Cleaning Up
 
 ```bash
 # Clean up a specific environment
-./manage.sh cleanup <client_name>
+./scripts/core/manage.sh cleanup <client_name>
 
 # Destroy unused environments
-./manage.sh destroy <client_name>
+./scripts/core/manage.sh destroy <client_name>
 
 # Clean up all environments
-./manage.sh destroy --all
+./scripts/core/manage.sh destroy --all
 ```
 

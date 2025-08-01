@@ -79,7 +79,6 @@ tools:
     - "Docker & Docker Compose"
     - "Podman & Podman Compose"
     - "Colima"
-    - "Apple Containerization"
 
   security:
     - "Terrascan"

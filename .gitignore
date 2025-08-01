@@ -111,7 +111,3 @@ site/
 # Scripts that might be generated
 *.generated.sh
 
-# Apple Containerization
-/tmp/apple-containerization/
-*.swift
-*.build/

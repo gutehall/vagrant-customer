@@ -13,7 +13,7 @@ vagrant-customer/
 ├── config/                      # Configuration files
 │   └── config.yaml             # Centralized project configuration
 ├── docs/                        # Documentation
-│   ├── APPLE_CONTAINERIZATION.md # Apple Containerization guide
+
 │   ├── STRUCTURE.md             # This file
 │   └── README.html             # Generated HTML documentation
 ├── examples/                    # Usage examples
@@ -62,21 +62,28 @@ vagrant-customer/
 - **Example System**: Easy to create and share examples
 - **Documentation**: Comprehensive documentation structure
 
+### **4. Configuration Management**
+- **Single Source of Truth**: All settings centralized in `config/config.yaml`
+- **No Duplication**: Eliminates redundant configuration variables
+- **Easy Maintenance**: Change settings once, applies everywhere
+- **Version Control**: Track configuration changes separately
+
 ## 📋 **File Descriptions**
 
 ### **Root Level Files**
 - **`README.md`**: Main project documentation and usage guide
 - **`Makefile`**: 🎯 Primary interface for all operations (recommended)
-- **`Vagrantfile`**: Main Vagrant configuration template
+- **`Vagrantfile`**: Main Vagrant configuration (reads from `config/config.yaml`)
 - **`.gitignore`**: Git ignore rules for the project
 
 ### **Configuration (`config/`)**
-- **`config.yaml`**: Centralized configuration for all project settings
-  - VM configuration
-  - Tool categories and options
-  - Installation settings
-  - Validation rules
-  - Logging configuration
+- **`config.yaml`**: 🎯 **Single source of truth** for all project settings
+  - VM configuration (memory, CPU, box, hostname, timezone)
+  - Provider-specific configurations (Parallels, VirtualBox, VMware, Hyper-V)
+  - Tool categories and options (61+ DevOps tools)
+  - Installation settings (retries, delays, logging)
+  - Validation rules and logging configuration
+  - **No duplication**: Eliminates redundant configuration variables
 
 ### **Documentation (`docs/`)**
 - **`APPLE_CONTAINERIZATION.md`**: Comprehensive guide for Apple's container solution
@@ -106,7 +113,7 @@ vagrant-customer/
   - Cloud CLIs (AWS, Azure, GCP, GitHub)
   - Kubernetes tools (Kubectl, Helm, Kind)
   - Infrastructure tools (Terraform, Ansible)
-  - Container tools (Docker, Podman, Colima, Apple Containerization)
+  - Container tools (Docker, Podman, Colima)
   - Security tools (Terrascan, Trivy)
   - Monitoring tools (Prometheus, Grafana)
   - CI/CD tools (Jenkins, ArgoCD)

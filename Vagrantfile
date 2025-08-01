@@ -1,9 +1,22 @@
-# Configuration variables
-$TIMEZONE = "Europe/Stockholm"
-$BASE_BOX = "gutehall/debian-12"
-$VM_MEMORY = 2048
-$VM_CPUS = 2
-$VM_NAME = "devbox"
+# Vagrant DevOps Environment
+# This Vagrantfile reads configuration from config/config.yaml
+
+require 'yaml'
+
+# Load configuration from config.yaml
+def load_config
+  config_file = File.join(File.dirname(__FILE__), 'config', 'config.yaml')
+  unless File.exist?(config_file)
+    raise "Configuration file not found: #{config_file}"
+  end
+  
+  YAML.load_file(config_file)
+rescue => e
+  raise "Failed to load configuration: #{e.message}"
+end
+
+# Load configuration
+config = load_config
 
 # Shell setup script
 $shell_setup_script = <<-'SCRIPT'
@@ -51,13 +64,13 @@ SCRIPT
 Vagrant.configure(2) do |config|
     # Timezone configuration
     if Vagrant.has_plugin?("vagrant-timezone")
-        config.timezone.value = $TIMEZONE
+        config.timezone.value = config['vm']['timezone']
     end
     
     # VM configuration
-    config.vm.box = $BASE_BOX
-    config.vm.box_check_update = false
-    config.vm.hostname = $VM_NAME
+    config.vm.box = config['vm']['box']
+    config.vm.box_check_update = config['vm']['box_check_update']
+    config.vm.hostname = config['vm']['hostname']
     
     # Create code directory
     config.vm.provision "shell", inline: "mkdir -p /home/vagrant/code"
@@ -69,7 +82,7 @@ Vagrant.configure(2) do |config|
     config.vm.provision "shell", inline: "sudo chsh -s /bin/zsh vagrant"
     
     # Install DevOps tools
-    	config.vm.provision "shell", path: "scripts/install/install.sh"
+    config.vm.provision "shell", path: "scripts/install/install.sh"
     
     # Copy configuration files
     config.vm.provision "file", source: "../../source/.zshrc", destination: "/home/vagrant/.zshrc"
@@ -77,33 +90,33 @@ Vagrant.configure(2) do |config|
     config.vm.provision "file", source: "../../source/bullet-train.zsh-theme", destination: "/home/vagrant/.oh-my-zsh/themes/bullet-train.zsh-theme"
     
     # Cleanup
-    	config.vm.provision "shell", path: "../../scripts/cleanup/cleanup.sh"
+    config.vm.provision "shell", path: "../../scripts/cleanup/cleanup.sh"
 
     # Provider configurations
     config.vm.provider "parallels" do |prl|
-        prl.memory = $VM_MEMORY
-        prl.cpus = $VM_CPUS
-        prl.name = $VM_NAME
-        prl.update_guest_tools = true
+        prl.memory = config['providers']['parallels']['memory']
+        prl.cpus = config['providers']['parallels']['cpus']
+        prl.name = config['providers']['parallels']['name']
+        prl.update_guest_tools = config['providers']['parallels']['update_guest_tools']
     end
 
     config.vm.provider "virtualbox" do |vb|
-        vb.memory = $VM_MEMORY
-        vb.cpus = $VM_CPUS
-        vb.name = $VM_NAME
-        vb.gui = false
-        vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+        vb.memory = config['providers']['virtualbox']['memory']
+        vb.cpus = config['providers']['virtualbox']['cpus']
+        vb.name = config['providers']['virtualbox']['name']
+        vb.gui = config['providers']['virtualbox']['gui']
+        vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"] if config['providers']['virtualbox']['nat_dns_resolver']
     end
 
     config.vm.provider "vmware_desktop" do |v|
-        v.memory = $VM_MEMORY
-        v.cpus = $VM_CPUS
-        v.name = $VM_NAME
+        v.memory = config['providers']['vmware_desktop']['memory']
+        v.cpus = config['providers']['vmware_desktop']['cpus']
+        v.name = config['providers']['vmware_desktop']['name']
     end
 
     config.vm.provider "hyperv" do |h|
-        h.memory = $VM_MEMORY
-        h.cpus = $VM_CPUS
-        h.name = $VM_NAME
+        h.memory = config['providers']['hyperv']['memory']
+        h.cpus = config['providers']['hyperv']['cpus']
+        h.name = config['providers']['hyperv']['name']
     end
 end

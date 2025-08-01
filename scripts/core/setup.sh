@@ -200,7 +200,7 @@ prompt_installation() {
         # Infrastructure
         "Open Policy Agent" "Terraform" "Packer" "Ansible"
         # Containers
-        "Docker & Docker Compose" "Colima" "Podman & Podman Compose" "Apple Containerization"
+        "Docker & Docker Compose" "Colima" "Podman & Podman Compose"
         # Security
         "Terrascan" "Trivy" "Tfsec"
         # Terraform Tools
