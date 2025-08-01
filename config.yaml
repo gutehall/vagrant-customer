@@ -1,0 +1,188 @@
+# Vagrant DevOps Environment Configuration
+# This file centralizes all configuration settings for the project
+
+# Base VM Configuration
+vm:
+  box: "gutehall/debian-12"
+  memory: 2048
+  cpus: 2
+  name: "devbox"
+  hostname: "devbox"
+  timezone: "Europe/Stockholm"
+  box_check_update: false
+
+# Provider-specific configurations
+providers:
+  parallels:
+    memory: 2048
+    cpus: 2
+    name: "devbox"
+    update_guest_tools: true
+
+  virtualbox:
+    memory: 2048
+    cpus: 2
+    name: "devbox"
+    gui: false
+    nat_dns_resolver: true
+
+  vmware_desktop:
+    memory: 2048
+    cpus: 2
+    name: "devbox"
+
+  hyperv:
+    memory: 2048
+    cpus: 2
+    name: "devbox"
+
+# Shell Environment Configuration
+shell:
+  default_shell: "/bin/zsh"
+  oh_my_zsh: true
+  vim_ultimate: true
+  plugins:
+    - "zsh-autosuggestions"
+    - "zsh-syntax-highlighting"
+    - "zsh-eza"
+  theme: "zenburn"
+
+# Network Configuration
+network:
+  nameservers:
+    - "8.8.8.8"
+    - "8.8.4.4"
+
+# Available DevOps Tools
+tools:
+  cloud_cli:
+    - "GitHub CLI"
+    - "AWS CLI v2"
+    - "Azure CLI"
+    - "Bicep"
+    - "Gcloud CLI"
+
+  kubernetes:
+    - "Minikube"
+    - "Kubectl"
+    - "Helm"
+    - "Kind"
+    - "Kustomize"
+
+  infrastructure:
+    - "Terraform"
+    - "Packer"
+    - "Ansible"
+    - "Open Policy Agent"
+
+  containers:
+    - "Docker & Docker Compose"
+    - "Podman & Podman Compose"
+    - "Colima"
+
+  security:
+    - "Terrascan"
+    - "Trivy"
+    - "Tfsec"
+
+  terraform_tools:
+    - "Terraform Docs"
+    - "Tfswitch"
+    - "Tflint"
+    - "Terratag"
+    - "Infracost"
+
+  development:
+    - "AWS CDK"
+    - "Shfmt"
+    - "Serverless"
+    - "Terrahub"
+
+  monitoring:
+    - "Prometheus"
+    - "Grafana"
+    - "Jaeger"
+    - "Fluentd"
+    - "Elasticsearch"
+
+  ci_cd:
+    - "Jenkins"
+    - "GitLab CLI"
+    - "ArgoCD"
+    - "Tekton"
+    - "CircleCI CLI"
+
+  database:
+    - "PostgreSQL Client"
+    - "MySQL Client"
+    - "Redis CLI"
+    - "MongoDB Tools"
+    - "SQLite"
+
+  networking:
+    - "Istio"
+    - "Linkerd"
+    - "Consul"
+    - "Vault"
+    - "Nginx"
+
+  testing:
+    - "Selenium"
+    - "JMeter"
+    - "Artillery"
+    - "K6"
+    - "Postman"
+
+  productivity:
+    - "JQ"
+    - "YQ"
+    - "FZF"
+    - "Ripgrep"
+    - "Bat"
+
+# Installation Configuration
+installation:
+  max_retries: 3
+  retry_delay: 2
+  parallel_install: false
+  log_file: "/tmp/install.log"
+  cleanup_after_install: true
+
+# Cleanup Configuration
+cleanup:
+  log_file: "/tmp/cleanup.log"
+  remove_old_kernels: true
+  remove_dev_packages: true
+  clean_temp_files: true
+  clean_documentation: true
+  clean_shell_history: true
+  clean_npm_cache: true
+  clean_docker_cache: true
+  optimize_filesystem: true
+
+# Project Structure
+project:
+  client_dir: "client"
+  scripts_dir: "scripts"
+  source_dir: "source"
+  default_local_path: "$HOME/Projects"
+  log_dir: "/tmp"
+
+# Validation Rules
+validation:
+  folder_name_pattern: "^[[:alnum:]]+$"
+  max_folder_name_length: 50
+  required_files:
+    - "Vagrantfile"
+    - "scripts/install.sh"
+  required_permissions:
+    - "setup.sh"
+
+# Logging Configuration
+logging:
+  enabled: true
+  level: "INFO"
+  timestamp_format: "%Y-%m-%d %H:%M:%S"
+  colors: true
+  file_output: true
+  console_output: true
