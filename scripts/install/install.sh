@@ -243,6 +243,57 @@ install_colima() {
     success "Colima installed"
 }
 
+# Apple Containerization
+install_apple_containerization() {
+    info "Installing Apple Containerization..."
+    
+    # Check if running on Apple Silicon
+    if [[ $(uname -m) != "arm64" ]]; then
+        warning "Apple Containerization requires Apple Silicon (M1/M2/M3). Skipping installation."
+        return 0
+    fi
+    
+    # Check macOS version (requires macOS 15+)
+    local macos_version=$(sw_vers -productVersion)
+    local major_version=$(echo "$macos_version" | cut -d. -f1)
+    local minor_version=$(echo "$macos_version" | cut -d. -f2)
+    
+    if [[ $major_version -lt 15 ]]; then
+        warning "Apple Containerization requires macOS 15 or later. Current version: $macos_version. Skipping installation."
+        return 0
+    fi
+    
+    # Install Swift and build tools if not present
+    if ! command -v swift &> /dev/null; then
+        info "Installing Swift..."
+        retry "curl -fsSL https://download.swift.org/swift-5.10-release/xcode/swift-5.10-RELEASE-ubuntu20.04.tar.gz -o swift.tar.gz" "Download Swift"
+        retry "tar -xzf swift.tar.gz && sudo mv swift-5.10-RELEASE-ubuntu20.04 /usr/local/swift" "Extract Swift"
+        retry "echo 'export PATH=/usr/local/swift/usr/bin:$PATH' >> ~/.bashrc" "Add Swift to PATH"
+        retry "rm swift.tar.gz" "Clean up Swift files"
+    fi
+    
+    # Clone and build Apple Containerization
+    info "Building Apple Containerization from source..."
+    retry "git clone https://github.com/apple/containerization.git /tmp/apple-containerization" "Clone Apple Containerization"
+    cd /tmp/apple-containerization
+    
+    # Install build dependencies
+    retry "${UPDATE} && ${INSTALL} build-essential git cmake" "Install build dependencies"
+    
+    # Build the package
+    retry "make all" "Build Apple Containerization"
+    
+    # Install the built binaries
+    retry "sudo cp -r /tmp/apple-containerization/.build/release/* /usr/local/bin/" "Install Apple Containerization binaries"
+    
+    # Clean up
+    cd - > /dev/null
+    retry "rm -rf /tmp/apple-containerization" "Clean up build files"
+    
+    success "Apple Containerization installed successfully"
+    info "Note: Apple Containerization requires macOS 15+ and Apple Silicon for full functionality"
+}
+
 # Docker & Docker Compose
 install_docker() {
     info "Installing Docker and Docker Compose..."

@@ -7,7 +7,7 @@ A comprehensive, optimized Vagrant-based DevOps environment setup tool that crea
 ### Core Features
 - **Isolated Client Environments**: Each client gets their own isolated VM environment
 - **Multi-Provider Support**: Works with Parallels, VirtualBox, VMware, and Hyper-V
-- **Comprehensive DevOps Toolset**: 60+ tools across 12 categories
+- **Comprehensive DevOps Toolset**: 61+ tools across 12 categories
 - **Automated Setup**: One-command setup with interactive tool selection
 - **File Synchronization**: Automatic sync between local and VM directories
 
@@ -15,7 +15,7 @@ A comprehensive, optimized Vagrant-based DevOps environment setup tool that crea
 - **Cloud CLIs** (5 tools) - AWS, Azure, GCP, GitHub
 - **Kubernetes** (5 tools) - Minikube, Kubectl, Helm, Kind, Kustomize
 - **Infrastructure** (4 tools) - Terraform, Packer, Ansible, OPA
-- **Containers** (3 tools) - Docker, Podman, Colima
+- **Containers** (4 tools) - Docker, Podman, Colima, Apple Containerization
 - **Security** (3 tools) - Terrascan, Trivy, Tfsec
 - **Terraform Ecosystem** (5 tools) - Docs, Tfswitch, Tflint, Terratag, Infracost
 - **Development** (4 tools) - AWS CDK, Shfmt, Serverless, Terrahub
@@ -41,14 +41,14 @@ A comprehensive, optimized Vagrant-based DevOps environment setup tool that crea
    cd vagrant-customer
    ```
 
-2. **Set execute permissions**:
+2. **Install dependencies** (optional but recommended):
    ```bash
-   chmod +x setup.sh manage.sh
+   make install-deps
    ```
 
-3. **Run the setup**:
+3. **Validate the installation**:
    ```bash
-   ./setup.sh
+   make validate
    ```
 
 ## 🎮 Usage
@@ -57,16 +57,58 @@ A comprehensive, optimized Vagrant-based DevOps environment setup tool that crea
 
 ```bash
 # Create a new client environment
-./manage.sh setup myclient
+make setup CLIENT=myclient
 
 # Start the environment
-./manage.sh start myclient
+make start CLIENT=myclient
 
 # Connect to the environment
-./manage.sh ssh myclient
+make ssh CLIENT=myclient
 
 # Check status
-./manage.sh status myclient
+make status CLIENT=myclient
+```
+
+### 🎯 **Primary Interface: Makefile**
+
+The **Makefile is the primary interface** for all operations. It provides a clean, consistent way to manage your DevOps environments:
+
+```bash
+# 🚀 Quick Start Commands
+make setup CLIENT=myproject    # Create new environment
+make start CLIENT=myproject    # Start environment
+make ssh CLIENT=myproject      # Connect to environment
+make status CLIENT=myproject   # Check environment status
+
+# 🔧 Management Commands
+make validate                  # Validate configuration
+make clean                     # Clean up temporary files
+make test                      # Run all tests
+
+# 🛠️ Development Commands
+make docs                      # Generate documentation
+make install-deps              # Install development dependencies
+make update-deps               # Update dependencies
+make lint                      # Check script syntax
+
+# 📚 Examples and Templates
+make example NAME=myexample    # Create new example
+make install                   # Install globally
+make uninstall                 # Uninstall global commands
+
+# 📖 Show all available commands
+make help
+```
+
+### 🔄 **Alternative Interface: Direct Scripts**
+
+For advanced users, you can also use the scripts directly:
+
+```bash
+# Direct script usage (not recommended for regular use)
+./scripts/core/manage.sh setup myproject
+./scripts/core/manage.sh start myproject
+./scripts/core/manage.sh ssh myproject
 ```
 
 ### Management Commands
@@ -138,6 +180,7 @@ The `manage.sh` script provides comprehensive environment management:
 - **Docker & Docker Compose** - Container platform
 - **Podman & Podman Compose** - Container engine
 - **Colima** - Container runtime for macOS
+- **Apple Containerization** - Native Linux containers on Apple Silicon
 
 ### Security Tools
 - **Terrascan** - Security scanner for IaC
@@ -226,27 +269,6 @@ tools:
   # ... more tool categories
 ```
 
-## 📁 Project Structure
-
-```
-vagrant-customer/
-├── README.md                 # This file
-├── config.yaml              # Centralized configuration
-├── manage.sh                # Management interface
-├── setup.sh                 # Setup script
-├── Vagrantfile              # Vagrant configuration
-├── scripts/
-│   ├── install.sh           # Tool installation script
-│   └── cleanup.sh           # System cleanup script
-├── source/
-│   ├── .zshrc              # Zsh configuration
-│   ├── .vimrc              # Vim configuration
-│   └── bullet-train.zsh-theme # Zsh theme
-└── client/                  # Client environments (created during setup)
-    └── <client_name>/
-        ├── Vagrantfile      # Client-specific Vagrantfile
-        └── install.sh       # Client-specific install script
-```
 
 ## 🔧 Customization
 

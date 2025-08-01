@@ -57,7 +57,7 @@ check_prerequisites() {
     fi
     
     # Check if required files exist
-    local required_files=("Vagrantfile" "setup.sh" "scripts/install.sh")
+    local required_files=("Vagrantfile" "scripts/core/setup.sh" "scripts/install/install.sh")
     for file in "${required_files[@]}"; do
         if [[ ! -f "$file" ]]; then
             error_exit "Required file '$file' not found."
@@ -75,7 +75,7 @@ ${BLUE}Vagrant DevOps Environment Manager${NC}
 ${CYAN}Usage:${NC} $0 [COMMAND] [OPTIONS]
 
 ${CYAN}Commands:${NC}
-  ${GREEN}setup${NC} [client_name]     Create a new client environment
+  ${GREEN}setup${NC} [client_name]    Create a new client environment
   ${GREEN}list${NC}                   List all client environments
   ${GREEN}start${NC} [client_name]    Start a client environment
   ${GREEN}stop${NC} [client_name]     Stop a client environment
@@ -87,7 +87,7 @@ ${CYAN}Commands:${NC}
   ${GREEN}backup${NC} [client_name]   Backup a client environment
   ${GREEN}restore${NC} [client_name]  Restore a client environment
   ${GREEN}logs${NC} [client_name]     Show logs for a client environment
-  ${GREEN}config${NC}                 Show current configuration
+  ${GREEN}config${NC}                  Show current configuration
   ${GREEN}validate${NC}               Validate project configuration
   ${GREEN}help${NC}                   Show this help message
 
@@ -349,7 +349,7 @@ validate_config() {
     info "Validating project configuration..."
     
     # Check required files
-    local required_files=("Vagrantfile" "setup.sh" "scripts/install.sh" "scripts/cleanup.sh")
+    local required_files=("Vagrantfile" "scripts/core/setup.sh" "scripts/install/install.sh" "scripts/cleanup/cleanup.sh")
     local missing_files=()
     
     for file in "${required_files[@]}"; do
@@ -363,8 +363,8 @@ validate_config() {
     fi
     
     # Check file permissions
-    if [[ ! -x "setup.sh" ]]; then
-        warning "setup.sh is not executable. Run: chmod +x setup.sh"
+    if [[ ! -x "scripts/core/setup.sh" ]]; then
+        warning "scripts/core/setup.sh is not executable. Run: chmod +x scripts/core/setup.sh"
     fi
     
     # Check Vagrant installation
@@ -386,7 +386,7 @@ main() {
     case "$command" in
         "setup")
             check_prerequisites
-            ./setup.sh "$@"
+            ./scripts/core/setup.sh "$@"
             ;;
         "list")
             list_clients

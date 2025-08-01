@@ -53,7 +53,7 @@ check_prerequisites() {
     fi
     
     # Check if required files exist
-    local required_files=("Vagrantfile" "scripts/install.sh")
+    local required_files=("Vagrantfile" "scripts/install/install.sh")
     for file in "${required_files[@]}"; do
         if [[ ! -f "$file" ]]; then
             error_exit "Required file '$file' not found."
@@ -156,7 +156,7 @@ create_and_copy_files() {
     fi
     
     # Copy required files
-    local files_to_copy=("Vagrantfile" "scripts/install.sh")
+    local files_to_copy=("Vagrantfile" "scripts/install/install.sh")
     for file in "${files_to_copy[@]}"; do
         if [[ -f "$file" ]]; then
             if cp "$file" "$CLIENT_DIR/$folder_name/$(basename "$file")"; then
@@ -200,7 +200,7 @@ prompt_installation() {
         # Infrastructure
         "Open Policy Agent" "Terraform" "Packer" "Ansible"
         # Containers
-        "Docker & Docker Compose" "Colima" "Podman & Podman Compose"
+        "Docker & Docker Compose" "Colima" "Podman & Podman Compose" "Apple Containerization"
         # Security
         "Terrascan" "Trivy" "Tfsec"
         # Terraform Tools
