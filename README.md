@@ -43,7 +43,16 @@ A comprehensive, optimized Vagrant-based DevOps environment setup tool that crea
 
 2. **Install dependencies** (optional but recommended):
    ```bash
+   # Interactive installation (recommended)
    make install-deps
+   
+   # Non-interactive installation (core tools only)
+   make install-deps-auto
+   
+   # Install specific virtualization engine
+   make install-virtualbox    # VirtualBox
+   make install-parallels     # Parallels Desktop
+   make install-vmware        # VMware Fusion
    ```
 
 3. **Validate the installation**:
@@ -87,7 +96,8 @@ make test                      # Run all tests
 
 # 🛠️ Development Commands
 make docs                      # Generate documentation
-make install-deps              # Install development dependencies
+make install-deps              # Install development dependencies (interactive)
+make install-deps-auto         # Install development dependencies (non-interactive)
 make update-deps               # Update dependencies
 make lint                      # Check script syntax
 
@@ -95,6 +105,11 @@ make lint                      # Check script syntax
 make example NAME=myexample    # Create new example
 make install                   # Install globally
 make uninstall                 # Uninstall global commands
+
+# 🖥️ Virtualization Engines
+make install-virtualbox        # Install VirtualBox
+make install-parallels         # Install Parallels Desktop
+make install-vmware            # Install VMware Fusion
 
 # 📖 Show all available commands
 make help

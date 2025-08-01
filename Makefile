@@ -18,7 +18,8 @@ help:
 	@echo "Development:"
 	@echo "  test                  - Run tests and validation"
 	@echo "  docs                  - Generate documentation"
-	@echo "  install-deps          - Install development dependencies"
+	@echo "  install-deps          - Install development dependencies (interactive)"
+	@echo "  install-deps-auto     - Install development dependencies (non-interactive)"
 	@echo "  update-deps           - Update dependencies"
 	@echo ""
 	@echo "Examples:"
@@ -27,6 +28,11 @@ help:
 	@echo "  make ssh CLIENT=myproject    - Connect to environment for 'myproject'"
 	@echo "  make validate               - Check if everything is configured correctly"
 	@echo "  make clean                  - Clean up build artifacts"
+	@echo ""
+	@echo "Virtualization engines:"
+	@echo "  make install-virtualbox     - Install VirtualBox"
+	@echo "  make install-parallels      - Install Parallels Desktop"
+	@echo "  make install-vmware         - Install VMware Fusion"
 
 # Setup a new client environment
 setup:
@@ -97,7 +103,7 @@ docs:
 	@if command -v pandoc >/dev/null 2>&1; then \
 		echo "Converting markdown to HTML..."; \
 		pandoc README.md -o docs/README.html; \
-		pandoc docs/APPLE_CONTAINERIZATION.md -o docs/APPLE_CONTAINERIZATION.html; \
+		pandoc docs/STRUCTURE.md -o docs/STRUCTURE.html; \
 		echo "Documentation generated in docs/"; \
 	else \
 		echo "Pandoc not found. Install with: brew install pandoc"; \
@@ -108,14 +114,63 @@ install-deps:
 	@echo "Installing development dependencies..."
 	@if command -v brew >/dev/null 2>&1; then \
 		brew install vagrant; \
-		brew install --cask virtualbox || echo "VirtualBox installation skipped (may need manual installation)"; \
-		brew install --cask parallels || echo "Parallels installation skipped (may need manual installation)"; \
-		brew install --cask vmware-fusion || echo "VMware Fusion installation skipped (may need manual installation)"; \
 		brew install pandoc; \
 		brew install shellcheck; \
-		echo "Development dependencies installed"; \
+		echo ""; \
+		echo "Virtualization Engine Selection:"; \
+		echo "1) VirtualBox (Free, cross-platform)"; \
+		echo "2) Parallels Desktop (macOS, commercial)"; \
+		echo "3) VMware Fusion (macOS, commercial)"; \
+		echo "4) Hyper-V (Windows, built-in)"; \
+		echo "5) Skip virtualization engine installation"; \
+		echo ""; \
+		read -p "Select virtualization engine (1-5): " choice; \
+		case $$choice in \
+			1) \
+				echo "Installing VirtualBox..."; \
+				brew install --cask virtualbox || echo "VirtualBox installation failed. Please install manually."; \
+				;; \
+			2) \
+				echo "Installing Parallels Desktop..."; \
+				brew install --cask parallels || echo "Parallels installation failed. Please install manually."; \
+				;; \
+			3) \
+				echo "Installing VMware Fusion..."; \
+				brew install --cask vmware-fusion || echo "VMware Fusion installation failed. Please install manually."; \
+				;; \
+			4) \
+				echo "Hyper-V is built into Windows. Please enable it manually."; \
+				echo "Run: Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All"; \
+				;; \
+			5) \
+				echo "Skipping virtualization engine installation."; \
+				echo "Please install your preferred virtualization engine manually."; \
+				;; \
+			*) \
+				echo "Invalid choice. Skipping virtualization engine installation."; \
+				;; \
+		esac; \
+		echo ""; \
+		echo "Development dependencies installed successfully!"; \
+		echo "Note: You may need to restart your system after installing virtualization software."; \
 	else \
 		echo "Homebrew not found. Please install Homebrew first."; \
+		echo "Visit: https://brew.sh/"; \
+		exit 1; \
+	fi
+
+# Install development dependencies (non-interactive)
+install-deps-auto:
+	@echo "Installing development dependencies (non-interactive)..."
+	@if command -v brew >/dev/null 2>&1; then \
+		brew install vagrant; \
+		brew install pandoc; \
+		brew install shellcheck; \
+		echo "Development dependencies installed (excluding virtualization engines)"; \
+		echo "Run 'make install-deps' to install virtualization engines interactively"; \
+	else \
+		echo "Homebrew not found. Please install Homebrew first."; \
+		echo "Visit: https://brew.sh/"; \
 		exit 1; \
 	fi
 
@@ -160,6 +215,34 @@ example:
 	@cp Vagrantfile examples/$(NAME)/
 	@cp config/config.yaml examples/$(NAME)/
 	@echo "Example created in examples/$(NAME)/"
+
+# Install specific virtualization engine
+install-virtualbox:
+	@echo "Installing VirtualBox..."
+	@if command -v brew >/dev/null 2>&1; then \
+		brew install --cask virtualbox || echo "VirtualBox installation failed. Please install manually."; \
+	else \
+		echo "Homebrew not found. Please install Homebrew first."; \
+		exit 1; \
+	fi
+
+install-parallels:
+	@echo "Installing Parallels Desktop..."
+	@if command -v brew >/dev/null 2>&1; then \
+		brew install --cask parallels || echo "Parallels installation failed. Please install manually."; \
+	else \
+		echo "Homebrew not found. Please install Homebrew first."; \
+		exit 1; \
+	fi
+
+install-vmware:
+	@echo "Installing VMware Fusion..."
+	@if command -v brew >/dev/null 2>&1; then \
+		brew install --cask vmware-fusion || echo "VMware Fusion installation failed. Please install manually."; \
+	else \
+		echo "Homebrew not found. Please install Homebrew first."; \
+		exit 1; \
+	fi
 
 # Install project globally (for development)
 install:
